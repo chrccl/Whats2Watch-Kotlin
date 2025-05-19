@@ -1,7 +1,11 @@
-package it.namenotfoundexception.whats2watch.model
+package it.namenotfoundexception.whats2watch.model.entities
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "movies")
 data class Movie(
     @SerializedName("Title") val title: String,
     @SerializedName("Released") val released: String,
@@ -13,5 +17,7 @@ data class Movie(
     @SerializedName("Awards") val awards: String,
     @SerializedName("Poster") val poster: String,
     val imdbRating: String,
+    @PrimaryKey
+    @ColumnInfo("movie_id")
     val imdbID: String
 )

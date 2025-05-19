@@ -13,6 +13,12 @@ import androidx.room.ForeignKey
             parentColumns = ["username"],
             childColumns = ["user"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Movie::class,
+            parentColumns = ["movie_id"],
+            childColumns = ["movie_id"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
