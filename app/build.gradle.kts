@@ -10,6 +10,10 @@ android {
     namespace = "it.namenotfoundexception.whats2watch"
     compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "it.namenotfoundexception.whats2watch"
         minSdk = 24
@@ -18,6 +22,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OMDB_API_KEY", "\"${property("OMDB_API_KEY")}\"")
     }
 
     buildTypes {
