@@ -1,8 +1,8 @@
-package it.namenotfoundexception.whats2watch
+package it.namenotfoundexception.whats2watch.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class whats2Watch: Application() {
+class Whats2Watch: Application() {
 }
