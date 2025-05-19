@@ -1,10 +1,9 @@
-package it.namenotfoundexception.whats2watch.entities
+package it.namenotfoundexception.whats2watch.model
 
 import com.google.gson.annotations.SerializedName
 
 data class Movie(
     @SerializedName("Title") val title: String,
-    @SerializedName("Year") val year: String,
     @SerializedName("Released") val released: String,
     @SerializedName("Runtime") val runtime: String,
     @SerializedName("Genre") val genre: String,
