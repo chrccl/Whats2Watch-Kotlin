@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import it.namenotfoundexception.whats2watch.api.TMDBService
 import it.namenotfoundexception.whats2watch.model.dao.MovieDao
 import it.namenotfoundexception.whats2watch.model.dao.PreferenceDao
 import it.namenotfoundexception.whats2watch.model.dao.ReviewDao
@@ -26,7 +27,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun movieRepo(movieDao: MovieDao): MovieRepository = MovieRepository(movieDao)
+    fun movieRepo(movieDao: MovieDao, api: TMDBService): MovieRepository = MovieRepository(movieDao, api)
 
     @Provides
     @Singleton
