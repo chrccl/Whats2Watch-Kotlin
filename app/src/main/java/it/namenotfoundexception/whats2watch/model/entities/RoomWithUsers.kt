@@ -8,9 +8,13 @@ data class RoomWithUsers(
     @Embedded val room: Room,
 
     @Relation(
-        parentColumn = "code",
-        entityColumn = "room_code",
-        associateBy = Junction(RoomParticipant::class)
+        parentColumn = "code", // Room.code
+        entityColumn = "username", // User.username
+        associateBy = Junction(
+            value = RoomParticipant::class,
+            parentColumn = "room_code", // RoomParticipant.roomCode
+            entityColumn = "member"     // RoomParticipant.username
+        )
     )
     val participants: List<User>
 )

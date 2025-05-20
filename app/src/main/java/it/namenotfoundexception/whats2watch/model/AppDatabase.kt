@@ -1,7 +1,6 @@
 package it.namenotfoundexception.whats2watch.model
 
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import it.namenotfoundexception.whats2watch.model.dao.MovieDao
 import it.namenotfoundexception.whats2watch.model.dao.PreferenceDao
@@ -11,6 +10,7 @@ import it.namenotfoundexception.whats2watch.model.dao.UserDao
 import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Preference
 import it.namenotfoundexception.whats2watch.model.entities.Review
+import it.namenotfoundexception.whats2watch.model.entities.Room
 import it.namenotfoundexception.whats2watch.model.entities.RoomParticipant
 import it.namenotfoundexception.whats2watch.model.entities.User
 

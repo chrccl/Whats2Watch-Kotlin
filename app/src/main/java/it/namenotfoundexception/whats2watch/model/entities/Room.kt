@@ -18,6 +18,7 @@ import androidx.room.PrimaryKey
 )
 data class Room(
     @PrimaryKey
+    @ColumnInfo(name = "code")
     val code: String,
 
     @ColumnInfo(name = "username_host")

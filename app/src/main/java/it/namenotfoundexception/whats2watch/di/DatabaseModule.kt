@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import it.namenotfoundexception.whats2watch.model.AppDatabase
 import it.namenotfoundexception.whats2watch.model.dao.MovieDao
 import it.namenotfoundexception.whats2watch.model.dao.PreferenceDao
+import it.namenotfoundexception.whats2watch.model.dao.ReviewDao
 import it.namenotfoundexception.whats2watch.model.dao.RoomDao
 import it.namenotfoundexception.whats2watch.model.dao.UserDao
 import javax.inject.Singleton
@@ -35,6 +36,10 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun movieDao(db: AppDatabase): MovieDao = db.movieDao()
+
+    @Provides
+    @Singleton
+    fun reviewDao(db: AppDatabase): ReviewDao = db.reviewDao()
 
     @Provides
     @Singleton
