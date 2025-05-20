@@ -1,4 +1,4 @@
-package it.namenotfoundexception.whats2watch.model.repository
+package it.namenotfoundexception.whats2watch.model.repositories
 
 import it.namenotfoundexception.whats2watch.model.dao.RoomDao
 import it.namenotfoundexception.whats2watch.model.entities.Room
@@ -10,27 +10,27 @@ class RoomRepository @Inject constructor(
     private val roomDao: RoomDao
 ) {
 
-    suspend fun saveRoom(room: Room){
+    suspend fun saveRoom(room: Room) {
         roomDao.insertRoom(room)
     }
 
-    suspend fun insertParticipants(participants: List<RoomParticipant>){
+    suspend fun insertParticipants(participants: List<RoomParticipant>) {
         roomDao.insertParticipants(participants)
     }
 
-    suspend fun insertParticipant(participant: RoomParticipant){
+    suspend fun insertParticipant(participant: RoomParticipant) {
         roomDao.insertParticipant(participant)
     }
 
-    suspend fun getRoomWithUsers(code: String) : RoomWithUsers{
+    suspend fun getRoomWithUsers(code: String): RoomWithUsers {
         return roomDao.getRoomWithUsers(code)
     }
 
-    suspend fun removeParticipant(code: String, username: String){
+    suspend fun removeParticipant(code: String, username: String) {
         roomDao.removeParticipant(code, username)
     }
 
-    suspend fun removeParticipants(code: String){
+    suspend fun removeParticipants(code: String) {
         roomDao.removeParticipants(code)
     }
 }

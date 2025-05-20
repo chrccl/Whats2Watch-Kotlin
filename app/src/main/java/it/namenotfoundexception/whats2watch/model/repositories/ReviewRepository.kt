@@ -1,19 +1,19 @@
-package it.namenotfoundexception.whats2watch.model.repository
+package it.namenotfoundexception.whats2watch.model.repositories
 
 import it.namenotfoundexception.whats2watch.model.dao.ReviewDao
 import it.namenotfoundexception.whats2watch.model.entities.Movie
-import it.namenotfoundexception.whats2watch.model.entities.Reviews
+import it.namenotfoundexception.whats2watch.model.entities.Review
 import javax.inject.Inject
 
 class ReviewRepository @Inject constructor(
-    private val reviewDao : ReviewDao
+    private val reviewDao: ReviewDao
 ) {
 
-    suspend fun saveReview(review: Reviews){
+    suspend fun saveReview(review: Review) {
         reviewDao.insertReview(review)
     }
 
-    suspend fun getMovieRevies(id: String): List<Movie>{
+    suspend fun getMovieRevies(id: String): List<Movie> {
         return reviewDao.getMovieReviews(id)
     }
 

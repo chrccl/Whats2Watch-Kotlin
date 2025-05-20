@@ -1,4 +1,4 @@
-package it.namenotfoundexception.whats2watch.model.repository
+package it.namenotfoundexception.whats2watch.model.repositories
 
 import it.namenotfoundexception.whats2watch.model.dao.UserDao
 import it.namenotfoundexception.whats2watch.model.entities.User
@@ -8,19 +8,19 @@ class UserRepository @Inject constructor(
     private val userDao: UserDao
 ) {
 
-    suspend fun saveUser(user: User){
+    suspend fun saveUser(user: User) {
         userDao.insertUser(user)
     }
 
     suspend fun getUserByUsername(username: String): User? {
-        return try{
+        return try {
             userDao.getUserByUsername(username)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             null
         }
     }
 
-    suspend fun deleteUser(username: String){
+    suspend fun deleteUser(username: String) {
         userDao.deleteUserByUsername(username)
     }
 

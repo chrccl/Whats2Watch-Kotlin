@@ -10,7 +10,7 @@ import it.namenotfoundexception.whats2watch.model.dao.RoomDao
 import it.namenotfoundexception.whats2watch.model.dao.UserDao
 import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Preference
-import it.namenotfoundexception.whats2watch.model.entities.Reviews
+import it.namenotfoundexception.whats2watch.model.entities.Review
 import it.namenotfoundexception.whats2watch.model.entities.RoomParticipant
 import it.namenotfoundexception.whats2watch.model.entities.User
 
@@ -21,7 +21,7 @@ import it.namenotfoundexception.whats2watch.model.entities.User
         User::class,
         Movie::class,
         Preference::class,
-        Reviews::class
+        Review::class
     ],
     version = 1,
     exportSchema = false

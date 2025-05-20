@@ -19,7 +19,8 @@ interface PreferenceDao {
     @Query("SELECT * FROM preferences WHERE room_code = :code AND participant_name = :username")
     suspend fun getPreferencesByUser(code: String, username: String): List<Preference>
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM movies WHERE movie_id IN(
             SELECT p.movie_id
             FROM preferences AS p
@@ -32,6 +33,7 @@ interface PreferenceDao {
                 WHERE room_code = :roomCode
             )
         )
-    """)
+    """
+    )
     suspend fun getRoomMatches(roomCode: String): List<Movie>
 }

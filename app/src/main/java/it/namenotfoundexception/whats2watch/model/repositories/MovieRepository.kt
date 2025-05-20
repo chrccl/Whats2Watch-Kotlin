@@ -1,22 +1,21 @@
-package it.namenotfoundexception.whats2watch.model.repository
+package it.namenotfoundexception.whats2watch.model.repositories
 
 import it.namenotfoundexception.whats2watch.api.TMDBService
-import it.namenotfoundexception.whats2watch.api.TmdbMovieDetailDto
 import it.namenotfoundexception.whats2watch.model.dao.MovieDao
 import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.toMovieEntity
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
-    private val movieDao : MovieDao,
+    private val movieDao: MovieDao,
     private val api: TMDBService
 ) {
 
-    suspend fun saveMovie(movie: Movie){
+    suspend fun saveMovie(movie: Movie) {
         movieDao.insertMovie(movie)
     }
 
-    suspend fun getMovieById(id: String) : Movie{
+    suspend fun getMovieById(id: String): Movie {
         return movieDao.getMovieById(id)
     }
 
@@ -55,9 +54,9 @@ class MovieRepository @Inject constructor(
             ?.joinToString(",")
 
         val resp = api.discoverMovies(
-            genres  = genresParam,
-            cast    = actorIds,
-            crew    = directorIds,
+            genres = genresParam,
+            cast = actorIds,
+            crew = directorIds,
             voteGte = voteGte
         )
 

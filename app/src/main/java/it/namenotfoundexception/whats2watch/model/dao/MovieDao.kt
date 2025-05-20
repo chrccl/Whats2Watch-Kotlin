@@ -13,6 +13,6 @@ interface MovieDao {
     suspend fun insertMovie(movie: Movie)
 
     @Query("SELECT * FROM movies WHERE movie_id = :id")
-    suspend fun getMovieById(id: String):Movie
+    suspend fun getMovieById(id: String): Movie
 
 }

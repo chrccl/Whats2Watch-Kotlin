@@ -22,7 +22,7 @@ import androidx.room.ForeignKey
         )
     ]
 )
-data class Reviews(
+data class Review(
     @ColumnInfo(name = "user")
     val user: String,
 

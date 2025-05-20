@@ -26,17 +26,17 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun userDao(db: AppDatabase) : UserDao = db.userDao()
+    fun userDao(db: AppDatabase): UserDao = db.userDao()
 
     @Provides
     @Singleton
-    fun roomDao(db: AppDatabase) : RoomDao = db.roomDao()
+    fun roomDao(db: AppDatabase): RoomDao = db.roomDao()
 
     @Provides
     @Singleton
-    fun movieDao(db: AppDatabase) : MovieDao = db.movieDao()
+    fun movieDao(db: AppDatabase): MovieDao = db.movieDao()
 
     @Provides
     @Singleton
-    fun preferenceDao(db: AppDatabase) : PreferenceDao = db.preferenceDao()
+    fun preferenceDao(db: AppDatabase): PreferenceDao = db.preferenceDao()
 }

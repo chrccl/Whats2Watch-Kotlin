@@ -19,7 +19,8 @@ import javax.inject.Singleton
 object NetworkModule {
     private const val BASE_URL = "https://api.themoviedb.org/3/"
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val apiKey = BuildConfig.TMDB_API_KEY
         val interceptor = Interceptor { chain ->
@@ -36,7 +37,8 @@ object NetworkModule {
             .build()
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -44,7 +46,8 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideTmdbApiService(retrofit: Retrofit): TMDBService =
         retrofit.create(TMDBService::class.java)
 }
