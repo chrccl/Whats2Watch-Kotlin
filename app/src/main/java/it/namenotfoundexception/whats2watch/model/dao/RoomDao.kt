@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
-import androidx.room.Room
 import androidx.room.Transaction
+import it.namenotfoundexception.whats2watch.model.entities.Room
 import it.namenotfoundexception.whats2watch.model.entities.RoomParticipant
 import it.namenotfoundexception.whats2watch.model.entities.RoomWithUsers
 
@@ -29,9 +29,9 @@ interface RoomDao {
     suspend fun getRoomWithUsers(code: String): RoomWithUsers
 
     @Query("DELETE FROM room_participants WHERE room_code = :code AND member = :username")
-    suspend fun clearParticipant(code: String, username: String)
+    suspend fun removeParticipant(code: String, username: String)
 
     @Query("DELETE FROM room_participants WHERE room_code = :code")
-    suspend fun clearParticipants(code: String)
+    suspend fun removeParticipants(code: String)
 
 }

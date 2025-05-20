@@ -22,7 +22,7 @@ import androidx.room.ForeignKey
         )
     ]
 )
-data class Preferences(
+data class Preference(
     @ColumnInfo(name = "room_code")
     val roomCode: String,
 

@@ -5,19 +5,19 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import it.namenotfoundexception.whats2watch.model.entities.Movie
-import it.namenotfoundexception.whats2watch.model.entities.Preferences
+import it.namenotfoundexception.whats2watch.model.entities.Preference
 
 @Dao
 interface PreferenceDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertPreference(preference: Preferences)
+    suspend fun insertPreference(preference: Preference)
 
     @Query("SELECT * FROM preferences WHERE room_code = :code")
-    suspend fun getPreferencesByRoom(code: String): List<Preferences>
+    suspend fun getPreferencesByRoom(code: String): List<Preference>
 
     @Query("SELECT * FROM preferences WHERE room_code = :code AND participant_name = :username")
-    suspend fun getPreferencesByUser(code: String, username: String): List<Preferences>
+    suspend fun getPreferencesByUser(code: String, username: String): List<Preference>
 
     @Query("""
         SELECT * FROM movies WHERE movie_id IN(
