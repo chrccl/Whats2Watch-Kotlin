@@ -23,7 +23,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "OMDB_API_KEY", "\"${property("OMDB_API_KEY")}\"")
+        buildConfigField("String", "TMDB_API_KEY", "\"${property("TMDB_API_KEY")}\"")
     }
 
     buildTypes {
@@ -54,6 +54,9 @@ dependencies {
     // Retrofit + Gson converter
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    // Okhttp per interceptor
+    implementation(libs.okhttp)
 
     // Runtime di Room
     implementation(libs.androidx.room.runtime)
