@@ -10,6 +10,7 @@ import it.namenotfoundexception.whats2watch.model.dao.PreferenceDao
 import it.namenotfoundexception.whats2watch.model.dao.ReviewDao
 import it.namenotfoundexception.whats2watch.model.dao.RoomDao
 import it.namenotfoundexception.whats2watch.model.dao.UserDao
+import it.namenotfoundexception.whats2watch.model.repositories.GenreRepository
 import it.namenotfoundexception.whats2watch.model.repositories.MovieRepository
 import it.namenotfoundexception.whats2watch.model.repositories.PreferenceRepository
 import it.namenotfoundexception.whats2watch.model.repositories.ReviewRepository
@@ -27,7 +28,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun movieRepo(movieDao: MovieDao, api: TMDBService): MovieRepository = MovieRepository(movieDao, api)
+    fun movieRepo(movieDao: MovieDao, api: TMDBService): MovieRepository =
+        MovieRepository(movieDao, api)
 
     @Provides
     @Singleton
@@ -41,4 +43,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun roomRepo(roomDao: RoomDao): RoomRepository = RoomRepository(roomDao)
+
+    @Provides
+    @Singleton
+    fun genreRepo(api: TMDBService): GenreRepository = GenreRepository(api)
+
 }

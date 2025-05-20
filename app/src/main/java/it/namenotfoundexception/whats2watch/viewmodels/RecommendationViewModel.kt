@@ -3,8 +3,9 @@ package it.namenotfoundexception.whats2watch.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.namenotfoundexception.whats2watch.model.entities.Preference
 import it.namenotfoundexception.whats2watch.model.entities.Movie
+import it.namenotfoundexception.whats2watch.model.entities.Preference
+import it.namenotfoundexception.whats2watch.model.repositories.GenreRepository
 import it.namenotfoundexception.whats2watch.model.repositories.MovieRepository
 import it.namenotfoundexception.whats2watch.model.repositories.PreferenceRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RecommendationViewModel @Inject constructor(
     private val movieRepo: MovieRepository,
+    private val genreRepo: GenreRepository,
     private val prefRepo: PreferenceRepository
 ) : ViewModel() {
 
@@ -24,8 +26,7 @@ class RecommendationViewModel @Inject constructor(
     private val _recError = MutableStateFlow<String?>(null)
     val recError: StateFlow<String?> = _recError
 
-    /** Chiamato quando l’utente swipa (like/dislike) */
-    fun swipeOnMovie(
+    fun onMovieSwipe(
         roomCode: String,
         username: String,
         movieId: String,
@@ -33,43 +34,117 @@ class RecommendationViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             try {
-                prefRepo.savePreference(Preference(
-                    roomCode = roomCode,
-                    participantName = username,
-                    movieId = movieId,
-                    liked = liked
-                ))
+                prefRepo.savePreference(
+                    Preference(
+                        roomCode = roomCode,
+                        participantName = username,
+                        movieId = movieId,
+                        liked = liked
+                    )
+                )
                 _recError.value = null
-                // ricarica suggerimenti dopo ogni swipe
-                loadNextBatch(roomCode)
             } catch (e: Exception) {
                 _recError.value = "Errore salvataggio preferenza: ${e.message}"
             }
         }
     }
 
-    /** Carica il prossimo batch di film da proporre */
     fun loadNextBatch(
         roomCode: String,
-        filterGenres: List<Int>? = null,
-        filterActors: List<String>? = null,
-        filterDirectors: List<String>? = null,
-        voteGte: Float? = null
+        username: String,
+        pageSize: Int = 20
     ) {
         viewModelScope.launch {
             try {
-                // usa discoverFilteredMovies oppure, se vuoi, getRoomMatches per film liked da tutti
-                val list = movieRepo.discoverFilteredMovies(
-                    genreIds      = filterGenres,
-                    actorNames    = filterActors,
-                    directorNames = filterDirectors,
-                    voteAverageGte= voteGte
+                // 1) Prendi tutte le preference liked per utente e stanza
+                val likedPrefs = prefRepo
+                    .getPreferencesByUser(roomCode, username)
+                    .filter { it.liked }
+                val likedIds = likedPrefs.map { it.movieId }
+                val likedMovies = if (likedIds.isNotEmpty())
+                    movieRepo.getMoviesByIds(likedIds)
+                else emptyList()
+
+                // 2) Calcola anno medio → range ±5 anni
+                val avgYear = likedMovies
+                    .mapNotNull { it.year.toIntOrNull() }
+                    .takeIf { it.isNotEmpty() }?.average()?.toInt()
+                val (gteDate, lteDate) = avgYear?.let {
+                    "${(it - 5).coerceAtLeast(1950)}-01-01" to "${it + 5}-12-31"
+                } ?: (null to null)
+
+                // 3) Estrai top 3 generi, attori e top regista
+                val topGenres = topN(likedMovies.flatMap { it.genre.orEmpty().split(", ") }, 3)
+                val topActors = topN(likedMovies.flatMap { it.actors.orEmpty().split(", ") }, 3)
+                val topDirectors = topN(likedMovies.mapNotNull { it.director }, 1)
+
+                // 4) Mappa nomi generi → ID TMDb usando la mappa completa
+                val genreMap = genreRepo.getGenreMap()
+                val genreIds = topGenres.mapNotNull { genreMap[it] }
+
+                // 5) Chiamata discover con tutti i filtri
+                val candidates = movieRepo.discoverFilteredMovies(
+                    genreIds = genreIds,
+                    actorNames = topActors,
+                    directorNames = topDirectors,
+                    voteAverageGte = 6.0f,
+                    releaseDateGte = gteDate,
+                    releaseDateLte = lteDate,
+                    sortBy = "popularity.desc"
                 )
-                _suggestions.value = list
+
+                // 6) Filtra già visti e ordina con punteggio
+                val unseen = candidates.filter { c ->
+                    likedPrefs.none { it.movieId == c.imdbID }
+                }
+                val scored = unseen
+                    .map { c -> c to calculateScore(likedMovies, c) }
+                    .sortedByDescending { it.second }
+
+                _suggestions.value = scored.take(pageSize).map { it.first }
                 _recError.value = null
+
             } catch (e: Exception) {
-                _recError.value = "Errore caricamento suggerimenti: ${e.message}"
+                _recError.value = "Errore raccomandazione: ${e.localizedMessage}"
             }
         }
     }
+
+    /**
+     * Scoring basato su likedMovies:
+     * - +3 punti per genere in comune
+     * - +2 * voto medio (imdbRating) * numero di attori in comune
+     * - +2 punti se stesso regista
+     * - moltiplica tutto per voto medio del candidato
+     */
+    private fun calculateScore(liked: List<Movie>, candidate: Movie): Double {
+        val candGenres = candidate.genre?.split(", ") ?: emptyList()
+        val candActors = candidate.actors?.split(", ") ?: emptyList()
+        val candDir = candidate.director
+
+        val baseScore = liked.sumOf { lm ->
+            var s = 0
+            // generi
+            val commonG = lm.genre?.split(", ")?.count { it in candGenres } ?: 0
+            s += 3 * commonG
+            // attori
+            val commonA = lm.actors?.split(", ")?.count { it in candActors } ?: 0
+            s += (2 * commonA * (candidate.imdbRating?.toDoubleOrNull() ?: 1.0)).toInt()
+            // regista
+            if (lm.director == candDir) s += 2
+            s
+        }
+        val vote = candidate.imdbRating?.toDoubleOrNull() ?: 1.0
+        return baseScore * vote
+    }
+
+    /** Calcola i N elementi più frequenti nella lista */
+    private fun <T> topN(list: List<T>, n: Int): List<T> =
+        list.groupingBy { it }
+            .eachCount()
+            .entries
+            .sortedByDescending { it.value }
+            .take(n)
+            .map { it.key }
+
 }

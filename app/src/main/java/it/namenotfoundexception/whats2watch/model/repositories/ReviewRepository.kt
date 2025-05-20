@@ -1,7 +1,6 @@
 package it.namenotfoundexception.whats2watch.model.repositories
 
 import it.namenotfoundexception.whats2watch.model.dao.ReviewDao
-import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Review
 import javax.inject.Inject
 

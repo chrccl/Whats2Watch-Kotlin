@@ -19,6 +19,8 @@ class MovieRepository @Inject constructor(
         return movieDao.getMovieById(id)
     }
 
+    suspend fun getMoviesByIds(ids: List<String>): List<Movie> = movieDao.getMoviesByIds(ids)
+
     suspend fun fetchAndMapMovie(movieId: Int): Movie {
         val detail = api.getMovieDetails(movieId)
         val credits = api.getMovieCredits(movieId)
@@ -36,28 +38,32 @@ class MovieRepository @Inject constructor(
         genreIds: List<Int>? = null,
         actorNames: List<String>? = null,
         directorNames: List<String>? = null,
-        voteAverageGte: Float? = null
+        voteAverageGte: Float? = null,
+        releaseDateGte: String? = null,
+        releaseDateLte: String? = null,
+        sortBy: String = "popularity.desc",
+        page: Int = 1
     ): List<Movie> {
-        val genresParam = genreIds?.joinToString(",")
-        val voteGte = voteAverageGte
 
-        val actorIds = actorNames
+        val genresParam = genreIds?.joinToString(",")
+        val castParam = actorNames
             ?.mapNotNull { api.searchPerson(it).results.firstOrNull()?.id }
             ?.joinToString(",")
-
-        val directorIds = directorNames
+        val crewParam = directorNames
             ?.mapNotNull { name ->
-                api.searchPerson(name).results
-                    .firstOrNull { it.name.equals(name, true) }
-                    ?.id
+                api.searchPerson(name).results.firstOrNull { it.name.equals(name, true) }?.id
             }
             ?.joinToString(",")
 
         val resp = api.discoverMovies(
             genres = genresParam,
-            cast = actorIds,
-            crew = directorIds,
-            voteGte = voteGte
+            cast = castParam,
+            crew = crewParam,
+            voteGte = voteAverageGte,
+            sortBy = sortBy,
+            releaseDateGte = releaseDateGte,
+            releaseDateLte = releaseDateLte,
+            page = page
         )
 
         return resp.results.map { it.toMovieEntity() }

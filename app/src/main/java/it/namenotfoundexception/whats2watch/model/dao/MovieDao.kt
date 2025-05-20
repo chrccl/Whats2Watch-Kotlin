@@ -15,4 +15,7 @@ interface MovieDao {
     @Query("SELECT * FROM movies WHERE movie_id = :id")
     suspend fun getMovieById(id: String): Movie
 
+    @Query("SELECT * FROM movies WHERE movie_id IN(:ids)")
+    suspend fun getMoviesByIds(ids: List<String>): List<Movie>
+
 }

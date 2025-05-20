@@ -34,8 +34,11 @@ interface TMDBService {
         @Query("with_cast") cast: String? = null,
         @Query("with_crew") crew: String? = null,
         @Query("vote_average.gte") voteGte: Float? = null,
-        @Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1
+        @Query("sort_by") sortBy: String = "popularity.desc",
+        @Query("primary_release_date.gte") releaseDateGte: String? = null,  // yyyy-MM-dd
+        @Query("primary_release_date.lte") releaseDateLte: String? = null,  // yyyy-MM-dd
+        @Query("page") page: Int = 1,
+        @Query("language") language: String = "en-US"
     ): TmdbSearchResponse
 
     // ricerca persona per ottenere ID attori/registi
@@ -45,5 +48,10 @@ interface TMDBService {
         @Query("page") page: Int = 1,
         @Query("language") language: String = "en-US"
     ): TmdbPersonSearchResponse
+
+    @GET("genre/movie/list")
+    suspend fun getGenreList(
+        @Query("language") language: String = "en-US"
+    ): TmdbGenreListResponse
 
 }

@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
-import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Review
 
 @Dao

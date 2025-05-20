@@ -29,6 +29,8 @@ data class TmdbMovieDetailDto(
     val vote_average: Float?
 )
 
+data class TmdbGenreListResponse(val genres: List<GenreDto>)
+
 data class GenreDto(
     val id: Int,
     val name: String
