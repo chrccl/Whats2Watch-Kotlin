@@ -14,8 +14,8 @@ interface ReviewDao {
     suspend fun insertReview(review: Review)
 
     @Query("SELECT * FROM reviews WHERE movie_id = :id ORDER BY rating DESC")
-    suspend fun getMovieReviews(id: String): List<Movie>
+    suspend fun getMovieReviews(id: String): List<Review>
 
     @Query("SELECT * FROM reviews WHERE user = :username")
-    suspend fun getReviewsByUser(username: String): List<Movie>
+    suspend fun getReviewsByUser(username: String): List<Review>
 }

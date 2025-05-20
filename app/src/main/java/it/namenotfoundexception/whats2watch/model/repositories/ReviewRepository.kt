@@ -13,11 +13,11 @@ class ReviewRepository @Inject constructor(
         reviewDao.insertReview(review)
     }
 
-    suspend fun getMovieRevies(id: String): List<Movie> {
+    suspend fun getMovieReviews(id: String): List<Review> {
         return reviewDao.getMovieReviews(id)
     }
 
-    suspend fun getReviewsByUser(username: String): List<Movie> {
+    suspend fun getReviewsByUser(username: String): List<Review> {
         return reviewDao.getReviewsByUser(username)
     }
 }
