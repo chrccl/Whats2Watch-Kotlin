@@ -72,7 +72,7 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     // COIL
-    implementation(libs.coil3.coil.compose)
+    implementation(libs.coil.compose)
 
 
     implementation(libs.androidx.core.ktx)
