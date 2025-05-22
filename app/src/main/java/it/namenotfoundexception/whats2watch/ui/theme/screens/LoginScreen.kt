@@ -29,7 +29,7 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
-    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
@@ -116,8 +116,8 @@ fun LoginScreen(
 
             // Email field (usando come username)
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
+                value = username,
+                onValueChange = { username = it },
                 label = { Text("Username", color = Color.White) },
                 singleLine = true,
                 enabled = !isLoading,
@@ -181,12 +181,12 @@ fun LoginScreen(
             // Login button
             Button(
                 onClick = {
-                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                    if (username.isNotEmpty() && password.isNotEmpty()) {
                         isLoading = true
-                        viewModel.login(email.trim(), password)
+                        viewModel.login(username.trim(), password)
                     }
                 },
-                enabled = !isLoading && email.isNotEmpty() && password.isNotEmpty(),
+                enabled = !isLoading && username.isNotEmpty() && password.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFE53935)
                 ),
