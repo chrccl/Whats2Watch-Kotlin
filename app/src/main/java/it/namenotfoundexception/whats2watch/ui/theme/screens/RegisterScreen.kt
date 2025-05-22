@@ -1,3 +1,4 @@
+
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.foundation.background
@@ -15,17 +16,32 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    onRegisterClick: (username: String, password: String) -> Unit,
+    viewModel: AuthViewModel = hiltViewModel(),
+    onRegisterSuccess: () -> Unit,
     onLoginClick: () -> Unit
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var validationError by remember { mutableStateOf<String?>(null) }
+
+    val currentUser by viewModel.currentUser.collectAsState()
+    val authError by viewModel.authError.collectAsState()
+
+    // Osserva quando l'utente è registrato con successo
+    LaunchedEffect(currentUser) {
+        if (currentUser != null && !isLoading) {
+            onRegisterSuccess()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -84,12 +100,26 @@ fun RegisterScreen(
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
+            // Mostra errori se presenti
+            val errorToShow = authError ?: validationError
+            errorToShow?.let { error ->
+                Text(
+                    text = error,
+                    color = Color.Red,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
+
             // Username field
             OutlinedTextField(
                 value = username,
-                onValueChange = { username = it },
+                onValueChange = {
+                    username = it
+                    validationError = null // Reset validation error
+                },
                 label = { Text("Username", color = Color.White) },
                 singleLine = true,
+                enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
                     focusedTextColor         = Color.White,
                     unfocusedTextColor       = Color.White,
@@ -107,10 +137,14 @@ fun RegisterScreen(
             // Password field
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = {
+                    password = it
+                    validationError = null // Reset validation error
+                },
                 label = { Text("Password", color = Color.White) },
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
+                enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
                     focusedTextColor         = Color.White,
                     unfocusedTextColor       = Color.White,
@@ -128,10 +162,14 @@ fun RegisterScreen(
             // Confirm Password field
             OutlinedTextField(
                 value = confirmPassword,
-                onValueChange = { confirmPassword = it },
+                onValueChange = {
+                    confirmPassword = it
+                    validationError = null // Reset validation error
+                },
                 label = { Text("Conferma Password", color = Color.White) },
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
+                enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
                     focusedTextColor         = Color.White,
                     unfocusedTextColor       = Color.White,
@@ -170,10 +208,27 @@ fun RegisterScreen(
             // Register button
             Button(
                 onClick = {
-                    if (password == confirmPassword && password.isNotEmpty()) {
-                        onRegisterClick(username, password)
+                    when {
+                        username.isEmpty() -> {
+                            validationError = "Username is required"
+                        }
+                        password.isEmpty() -> {
+                            validationError = "Password is required"
+                        }
+                        password != confirmPassword -> {
+                            validationError = "Passwords do not match"
+                        }
+                        password.length < 4 -> {
+                            validationError = "Password must be at least 4 characters"
+                        }
+                        else -> {
+                            isLoading = true
+                            validationError = null
+                            viewModel.register(username.trim(), password)
+                        }
                     }
                 },
+                enabled = !isLoading,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFE53935)
                 ),
@@ -182,12 +237,26 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .height(56.dp)
             ) {
-                Text(
-                    text = "Register Now",
-                    fontSize = 18.sp,
-                    color = Color.White
-                )
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                } else {
+                    Text(
+                        text = "Register Now",
+                        fontSize = 18.sp,
+                        color = Color.White
+                    )
+                }
             }
+        }
+    }
+
+    // Reset loading quando cambiano i valori osservati
+    LaunchedEffect(authError) {
+        if (authError != null) {
+            isLoading = false
         }
     }
 }
@@ -200,8 +269,6 @@ fun RegisterScreen(
 private fun RegisterScreenPreview() {
     RegisterScreen(
         onLoginClick = { /* no-op for preview */ },
-        onRegisterClick = { username: String, password: String ->
-            /* no-op for preview */
-        }
+        onRegisterSuccess = { /* no-op for preview */ }
     )
 }

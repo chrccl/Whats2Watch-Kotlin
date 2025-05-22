@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import it.namenotfoundexception.whats2watch.ui.theme.Navigation
 import it.namenotfoundexception.whats2watch.ui.theme.Whats2WatchTheme
-import it.namenotfoundexception.whats2watch.ui.theme.screens.LoginScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -22,12 +22,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Whats2WatchTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        onLoginClick = { /* no-op for preview */ },
-                        onRegisterClick = { /* no-op for preview */ }
-                    )
+                Scaffold(modifier = Modifier.fillMaxSize()) {
+                    innerPadding -> Navigation(modifier = Modifier.padding(innerPadding))
                 }
             }
         }

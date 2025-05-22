@@ -1,3 +1,4 @@
+
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,17 +17,31 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    onLoginClick: () -> Unit,
+    viewModel: AuthViewModel = hiltViewModel(),
+    onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+
+    val currentUser by viewModel.currentUser.collectAsState()
+    val authError by viewModel.authError.collectAsState()
+
+    // Osserva quando l'utente è loggato con successo
+    LaunchedEffect(currentUser) {
+        if (currentUser != null && !isLoading) {
+            onLoginSuccess()
+        }
+    }
 
     val imageRequest = ImageRequest.Builder(LocalContext.current)
         .data("https://i.ibb.co/qMBj6J9V/4839516-277052265.jpg")
@@ -90,12 +105,22 @@ fun LoginScreen(
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
-            // Email field
+            // Mostra errore se presente
+            authError?.let { error ->
+                Text(
+                    text = error,
+                    color = Color.Red,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
+
+            // Email field (usando come username)
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email", color = Color.White) },
+                label = { Text("Username", color = Color.White) },
                 singleLine = true,
+                enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
                     focusedTextColor         = Color.White,
                     unfocusedTextColor       = Color.White,
@@ -117,6 +142,7 @@ fun LoginScreen(
                 label = { Text("Password", color = Color.White) },
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
+                enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
                     focusedTextColor         = Color.White,
                     unfocusedTextColor       = Color.White,
@@ -154,7 +180,13 @@ fun LoginScreen(
 
             // Login button
             Button(
-                onClick = { onLoginClick() },
+                onClick = {
+                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                        isLoading = true
+                        viewModel.login(email.trim(), password)
+                    }
+                },
+                enabled = !isLoading && email.isNotEmpty() && password.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFE53935)
                 ),
@@ -163,11 +195,25 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .height(56.dp)
             ) {
-                Text(
-                    text = "Login",
-                    fontSize = 18.sp
-                )
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                } else {
+                    Text(
+                        text = "Login",
+                        fontSize = 18.sp
+                    )
+                }
             }
+        }
+    }
+
+    // Reset loading quando cambiano i valori osservati
+    LaunchedEffect(authError) {
+        if (authError != null) {
+            isLoading = false
         }
     }
 }
@@ -179,7 +225,7 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
-        onLoginClick = { /* no-op for preview */ },
+        onLoginSuccess = { /* no-op for preview */ },
         onRegisterClick = { /* no-op for preview */ }
     )
 }
