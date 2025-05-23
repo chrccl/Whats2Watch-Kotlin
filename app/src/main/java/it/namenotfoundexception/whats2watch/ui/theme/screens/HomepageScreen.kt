@@ -1,7 +1,9 @@
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,37 +13,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -51,13 +47,6 @@ import it.namenotfoundexception.whats2watch.model.entities.Room
 import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 import it.namenotfoundexception.whats2watch.viewmodels.RoomViewModel
 
-data class BottomNavItem(
-    val title: String,
-    val icon: ImageVector,
-    val selected: Boolean = false
-)
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomepageScreen(
     authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>(),
@@ -66,100 +55,93 @@ fun HomepageScreen(
     onRoomsClick: (roomCode: String, username: String) -> Unit,
     onRoomMenuClick: () -> Unit
 ) {
+    val backgroundColor = Color(0xFF1A1A1A)
     val currentUser by authViewModel.currentUser.collectAsState()
     roomViewModel.getRoomsByUser(currentUser!!.username)
     val rooms by roomViewModel.roomByUsers.collectAsState()
 
-    val bottomNavItems = remember {
-        listOf(
-            BottomNavItem("Home", Icons.Default.Home, selected = true),
-            BottomNavItem("Rooms", Icons.Default.PlayArrow),
-            BottomNavItem("Profile", Icons.Default.Person)
-        )
-    }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = "Whats2Watch",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        currentUser?.let { user ->
-                            Text(
-                                text = "Welcome, ${user.username}",
-                                fontSize = 14.sp,
-                                color = Color.Gray
-                            )
-                        }
-                    }
-                },
-                actions = {
-                    Button(
-                        onClick = onLogoutClick,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE53E3E)
-                        ),
-                        modifier = Modifier.padding(end = 8.dp)
-                    ) {
-                        Text("Logout", color = Color.White)
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF2D3748)
-                )
-            )
-        },
-        bottomBar = {
-            BottomNavigationBar(
-                items = bottomNavItems,
-                onItemClick = { item ->
-                    when (item.title) {
-                        "Rooms" -> onRoomMenuClick() //da cambiare
-                        "Home" -> fun() {}
-                    }
-                }
-            )
-        },
-        floatingActionButton = {
-            val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            FloatingActionButton(
-                onClick = {
-                    val code = (1..6)
-                        .map { chars.random() }
-                        .joinToString("")
-                    roomViewModel.createRoom(code, currentUser!!.username)
-                    onRoomsClick(code, currentUser!!.username)
-                },
-                containerColor = Color(0xFFE53E3E),
-                contentColor = Color.White
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Create Room"
-                )
-            }
-        },
-        containerColor = Color(0xFF1A202C)
-    ) { paddingValues ->
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .background(Color(0xFF1A202C))
+                .padding(bottom = 80.dp) // Space for bottom navigation
         ) {
+            // Top Bar
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "Whats2Watch",
+                        color = Color.White,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    currentUser?.let { user ->
+                        Text(
+                            text = "Welcome, ${user.username}",
+                            color = Color.Gray,
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+
+                Button(
+                    onClick = onLogoutClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFE53935)
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Text("Logout")
+                }
+            }
+
+            // Main content
             RecentRoomsSection(
                 rooms = rooms ?: emptyList(),
                 onRoomClick = { room ->
                     onRoomsClick(room.code, currentUser!!.username)
                 },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.weight(1f)
             )
         }
+
+        // Floating Action Button
+        FloatingActionButton(
+            onClick = {
+                val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                val code = (1..6)
+                    .map { chars.random() }
+                    .joinToString("")
+                roomViewModel.createRoom(code, currentUser!!.username)
+                onRoomsClick(code, currentUser!!.username)
+            },
+            containerColor = Color(0xFFE53935),
+            contentColor = Color.White,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 96.dp, end = 16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Create Room"
+            )
+        }
+
+        // Bottom Navigation
+        BottomNavigationHomepage(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onRoomsClick = onRoomMenuClick
+        )
     }
 }
 
@@ -182,20 +164,29 @@ fun RecentRoomsSection(
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        ) {
-            items(rooms) { room ->
-                RoomCard(
-                    room = room,
-                    onClick = { onRoomClick(room) }
-                )
+        if(rooms.size > 0){
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(bottom = 16.dp)
+            ) {
+                items(rooms) { room ->
+                    RoomCard(
+                        room = room,
+                        onClick = { onRoomClick(room) }
+                    )
+                }
             }
+        }else{
+            Text(
+                text = "No rooms founded",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
         }
     }
 }
-
 
 @Composable
 fun RoomCard(
@@ -205,14 +196,15 @@ fun RoomCard(
 ) {
     roomViewModel.loadRoom(room.code)
     val roomWithUser by roomViewModel.roomData.collectAsState()
+
     Card(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(120.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF2D3748)
+            containerColor = Color(0xFF2A2A2A)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -222,15 +214,6 @@ fun RoomCard(
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-//            AsyncImage(
-//                model = room.,
-//                contentDescription = room.name,
-//                modifier = Modifier
-//                    .size(96.dp)
-//                    .clip(RoundedCornerShape(8.dp)),
-//                contentScale = ContentScale.Crop
-//            )
-
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(
@@ -248,7 +231,7 @@ fun RoomCard(
 
                 Column {
                     Text(
-                        text = "${roomWithUser!!.participants.size} Members",
+                        text = "${roomWithUser?.participants?.size ?: 0} Members",
                         fontSize = 14.sp,
                         color = Color.Gray
                     )
@@ -259,39 +242,46 @@ fun RoomCard(
 }
 
 @Composable
-fun BottomNavigationBar(
-    items: List<BottomNavItem>,
-    onItemClick: (BottomNavItem) -> Unit
+fun BottomNavigationHomepage(
+    modifier: Modifier = Modifier,
+    onRoomsClick: () -> Unit
 ) {
-    NavigationBar(
-        containerColor = Color(0xFF2D3748),
-        modifier = Modifier.height(64.dp)
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .background(Color.Black),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        items.forEach { item ->
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.title,
-                        tint = if (item.selected) Color(0xFFE53E3E) else Color.Gray
-                    )
-                },
-                label = {
-                    Text(
-                        text = item.title,
-                        fontSize = 12.sp,
-                        color = if (item.selected) Color(0xFFE53E3E) else Color.Gray
-                    )
-                },
-                selected = item.selected,
-                onClick = { onItemClick(item) },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color(0xFFE53E3E),
-                    selectedTextColor = Color(0xFFE53E3E),
-                    unselectedIconColor = Color.Gray,
-                    unselectedTextColor = Color.Gray,
-                    indicatorColor = Color.Transparent
-                )
+        // Home Icon (Active)
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(Color.White),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Home,
+                contentDescription = "Home",
+                tint = Color(0xFFE53935)
+            )
+        }
+
+        // Rooms Icon
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFE53935))
+                .clickable { onRoomsClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Rooms",
+                tint = Color.White
             )
         }
     }

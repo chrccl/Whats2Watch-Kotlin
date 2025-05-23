@@ -285,21 +285,6 @@ fun BottomNavigationRooms(
                 tint = Color(0xFFE53935)
             )
         }
-
-        // Profile Icon
-        Box(
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFE53935)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Profile",
-                tint = Color.White
-            )
-        }
     }
 }
 

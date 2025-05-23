@@ -202,27 +202,6 @@ fun RegisterScreen(
                     .padding(bottom = 24.dp)
             )
 
-            // Already have an account text
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Do you already have an account? ",
-                    color = Color.White
-                )
-
-                Text(
-                    text = "Login",
-                    color = Color(0xFFE53935),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable { onLoginClick() }
-                )
-            }
-
             // Register button
             Button(
                 onClick = {

@@ -175,27 +175,6 @@ fun LoginScreen(
                     .padding(bottom = 24.dp)
             )
 
-            // Don't have an account text
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Don't you have an account? ",
-                    color = Color.White
-                )
-
-                Text(
-                    text = "Register",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable { onRegisterClick() }
-                )
-            }
-
             // Login button
             Button(
                 onClick = {
@@ -204,7 +183,6 @@ fun LoginScreen(
                         viewModel.login(username.trim(), password)
                     }
                 },
-                enabled = !isLoading && username.isNotEmpty() && password.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFE53935)
                 ),
