@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import it.namenotfoundexception.whats2watch.model.entities.Room
 import it.namenotfoundexception.whats2watch.model.entities.RoomParticipant
 import it.namenotfoundexception.whats2watch.model.entities.RoomWithUsers
-import it.namenotfoundexception.whats2watch.model.repositories.RoomRepository
+import it.namenotfoundexception.whats2watch.repositories.RoomRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

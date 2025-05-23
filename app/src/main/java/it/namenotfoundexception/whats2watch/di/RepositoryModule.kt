@@ -10,12 +10,12 @@ import it.namenotfoundexception.whats2watch.model.dao.PreferenceDao
 import it.namenotfoundexception.whats2watch.model.dao.ReviewDao
 import it.namenotfoundexception.whats2watch.model.dao.RoomDao
 import it.namenotfoundexception.whats2watch.model.dao.UserDao
-import it.namenotfoundexception.whats2watch.model.repositories.GenreRepository
-import it.namenotfoundexception.whats2watch.model.repositories.MovieRepository
-import it.namenotfoundexception.whats2watch.model.repositories.PreferenceRepository
-import it.namenotfoundexception.whats2watch.model.repositories.ReviewRepository
-import it.namenotfoundexception.whats2watch.model.repositories.RoomRepository
-import it.namenotfoundexception.whats2watch.model.repositories.UserRepository
+import it.namenotfoundexception.whats2watch.repositories.GenreRepository
+import it.namenotfoundexception.whats2watch.repositories.MovieRepository
+import it.namenotfoundexception.whats2watch.repositories.PreferenceRepository
+import it.namenotfoundexception.whats2watch.repositories.ReviewRepository
+import it.namenotfoundexception.whats2watch.repositories.RoomRepository
+import it.namenotfoundexception.whats2watch.repositories.UserRepository
 import javax.inject.Singleton
 
 @Module

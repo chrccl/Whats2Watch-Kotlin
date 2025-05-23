@@ -1,4 +1,4 @@
-package it.namenotfoundexception.whats2watch.ui.theme
+package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -9,11 +9,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import it.namenotfoundexception.whats2watch.ui.theme.screens.HomepageScreen
-import it.namenotfoundexception.whats2watch.ui.theme.screens.LoginScreen
-import it.namenotfoundexception.whats2watch.ui.theme.screens.RegisterScreen
-import it.namenotfoundexception.whats2watch.ui.theme.screens.RoomsScreen
-import it.namenotfoundexception.whats2watch.ui.theme.screens.SwipeScreen
 import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 import it.namenotfoundexception.whats2watch.viewmodels.RecommendationViewModel
 

@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Preference
-import it.namenotfoundexception.whats2watch.model.repositories.GenreRepository
-import it.namenotfoundexception.whats2watch.model.repositories.MovieRepository
-import it.namenotfoundexception.whats2watch.model.repositories.PreferenceRepository
+import it.namenotfoundexception.whats2watch.repositories.GenreRepository
+import it.namenotfoundexception.whats2watch.repositories.MovieRepository
+import it.namenotfoundexception.whats2watch.repositories.PreferenceRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

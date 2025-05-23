@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.namenotfoundexception.whats2watch.model.entities.User
-import it.namenotfoundexception.whats2watch.model.repositories.UserRepository
+import it.namenotfoundexception.whats2watch.repositories.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

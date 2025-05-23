@@ -1,4 +1,4 @@
-package it.namenotfoundexception.whats2watch.model.repositories
+package it.namenotfoundexception.whats2watch.repositories
 
 import it.namenotfoundexception.whats2watch.model.dao.PreferenceDao
 import it.namenotfoundexception.whats2watch.model.entities.Movie
