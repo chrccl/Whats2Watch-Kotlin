@@ -23,6 +23,9 @@ class RoomViewModel @Inject constructor(
     private val _roomError = MutableStateFlow<String?>(null)
     val roomError: StateFlow<String?> = _roomError
 
+    private val _roomByUsers = MutableStateFlow<List<Room>?>(null)
+    val roomByUsers: StateFlow<List<Room>?> = _roomByUsers
+
     fun createRoom(code: String, hostUsername: String) {
         viewModelScope.launch {
             try {
@@ -65,6 +68,17 @@ class RoomViewModel @Inject constructor(
                 _roomError.value = null
             } catch (e: Exception) {
                 _roomError.value = "Impossibile caricare stanza: ${e.message}"
+            }
+        }
+    }
+
+    fun getRoomsByUser(username: String){
+        viewModelScope.launch {
+            try {
+                _roomByUsers.value = roomRepo.getRoomsByUser(username)
+                _roomError.value = null
+            } catch (e: Exception) {
+                _roomError.value = "Impossibile caricare stanze per utente: ${e.message}"
             }
         }
     }

@@ -9,7 +9,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import it.namenotfoundexception.whats2watch.ui.theme.screens.*
+import it.namenotfoundexception.whats2watch.ui.theme.screens.HomepageScreen
+import it.namenotfoundexception.whats2watch.ui.theme.screens.LoginScreen
+import it.namenotfoundexception.whats2watch.ui.theme.screens.RegisterScreen
+import it.namenotfoundexception.whats2watch.ui.theme.screens.RoomsScreen
+import it.namenotfoundexception.whats2watch.ui.theme.screens.SwipeScreen
 import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 import it.namenotfoundexception.whats2watch.viewmodels.RecommendationViewModel
 
@@ -80,9 +84,17 @@ fun Navigation(
                         popUpTo(Screen.Homepage.route) { inclusive = true }
                     }
                 },
+                onProfileClick = {
+                    //navController.navigate(Screen.Profile.route) TODO
+                },
                 onRoomsClick = {
+                               roomCode, username ->
+                    navController.navigate(Screen.Swipe.createRoute(roomCode, username))
+                },
+                onRoomMenuClick = {
                     navController.navigate(Screen.Rooms.route)
                 }
+
             )
         }
 

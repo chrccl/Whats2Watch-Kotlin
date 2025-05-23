@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -48,6 +49,9 @@ android {
 }
 
 dependencies {
+    // Navigation Compose
+    implementation("androidx.navigation:navigation-compose:2.7.5")
+
     // Gson (for JSON parsing)
     implementation(libs.gson)
 
@@ -74,7 +78,6 @@ dependencies {
 
     // COIL
     implementation(libs.coil.compose)
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
