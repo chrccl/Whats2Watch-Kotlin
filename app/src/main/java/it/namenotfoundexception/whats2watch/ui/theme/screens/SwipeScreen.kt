@@ -216,8 +216,6 @@ fun SwipeScreen(
                                                     false
                                                 )
                                                 batchCount++
-                                                // Ricarica prossimo batch dopo lo swipe
-                                                //
                                                 offsetX = 0f
                                             }
                                             else -> {

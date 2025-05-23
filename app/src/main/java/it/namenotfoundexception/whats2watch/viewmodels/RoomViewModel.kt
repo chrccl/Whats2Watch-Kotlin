@@ -3,9 +3,11 @@ package it.namenotfoundexception.whats2watch.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Room
 import it.namenotfoundexception.whats2watch.model.entities.RoomParticipant
 import it.namenotfoundexception.whats2watch.model.entities.RoomWithUsers
+import it.namenotfoundexception.whats2watch.model.repositories.PreferenceRepository
 import it.namenotfoundexception.whats2watch.model.repositories.RoomRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,17 +16,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RoomViewModel @Inject constructor(
-    private val roomRepo: RoomRepository
+    private val roomRepo: RoomRepository,
+    private val preferenceRepo: PreferenceRepository
 ) : ViewModel() {
 
     private val _roomData = MutableStateFlow<RoomWithUsers?>(null)
     val roomData: StateFlow<RoomWithUsers?> = _roomData
 
-    private val _roomError = MutableStateFlow<String?>(null)
-    val roomError: StateFlow<String?> = _roomError
+    private val _roomMatches = MutableStateFlow<List<Movie>?>(null)
+    val roomMatches: StateFlow<List<Movie>?> = _roomMatches
 
     private val _roomByUsers = MutableStateFlow<List<Room>?>(null)
     val roomByUsers: StateFlow<List<Room>?> = _roomByUsers
+
+    private val _roomError = MutableStateFlow<String?>(null)
+    val roomError: StateFlow<String?> = _roomError
 
     fun createRoom(code: String, hostUsername: String) {
         viewModelScope.launch {
@@ -79,6 +85,17 @@ class RoomViewModel @Inject constructor(
                 _roomError.value = null
             } catch (e: Exception) {
                 _roomError.value = "Impossibile caricare stanze per utente: ${e.message}"
+            }
+        }
+    }
+
+    fun getRoomMatches(code: String){
+        viewModelScope.launch {
+            try {
+                _roomMatches.value = preferenceRepo.getRoomMatches(code)
+                _roomError.value = null
+            } catch (e: Exception) {
+                _roomError.value = "Impossibile caricare i match per la stanza corrente: ${e.message}"
             }
         }
     }

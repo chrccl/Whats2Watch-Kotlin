@@ -17,7 +17,7 @@ class PreferenceRepository @Inject constructor(
         return preferenceDao.getPreferencesByUser(code, username)
     }
 
-    suspend fun getRoomMatches(code: String): List<Movie> {
+    suspend fun getRoomMatches(code: String): List<Movie>? {
         return preferenceDao.getRoomMatches(code)
     }
 
