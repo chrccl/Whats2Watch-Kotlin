@@ -19,8 +19,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Whats2WatchTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {
-                    innerPadding -> Navigation(modifier = Modifier.padding(innerPadding))
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Navigation(modifier = Modifier.padding(innerPadding))
                 }
             }
         }

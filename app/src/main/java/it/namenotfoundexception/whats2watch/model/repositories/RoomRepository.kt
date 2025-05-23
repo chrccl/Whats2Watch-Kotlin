@@ -34,7 +34,7 @@ class RoomRepository @Inject constructor(
         roomDao.removeParticipants(code)
     }
 
-    suspend fun getRoomsByUser(username: String) : List<Room>?{
+    suspend fun getRoomsByUser(username: String): List<Room>? {
         return roomDao.getRoomsByUser(username)
     }
 }

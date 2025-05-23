@@ -84,11 +84,7 @@ fun Navigation(
                         popUpTo(Screen.Homepage.route) { inclusive = true }
                     }
                 },
-                onProfileClick = {
-                    //navController.navigate(Screen.Profile.route) TODO
-                },
-                onRoomsClick = {
-                               roomCode, username ->
+                onRoomsClick = { roomCode, username ->
                     navController.navigate(Screen.Swipe.createRoute(roomCode, username))
                 },
                 onRoomMenuClick = {

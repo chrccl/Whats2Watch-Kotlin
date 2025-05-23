@@ -23,8 +23,33 @@ class RecommendationViewModel @Inject constructor(
     private val _suggestions = MutableStateFlow<List<Movie>>(emptyList())
     val suggestions: StateFlow<List<Movie>> = _suggestions
 
+    private val _roomMatches = MutableStateFlow<List<Movie>?>(null)
+    val roomMatches: StateFlow<List<Movie>?> = _roomMatches
+
+    private val _userLikedMovies = MutableStateFlow<List<Movie>?>(null)
+    val userLikedMovies: StateFlow<List<Movie>?> = _userLikedMovies
+
     private val _recError = MutableStateFlow<String?>(null)
     val recError: StateFlow<String?> = _recError
+
+    fun getLikedMoviesByUser(username: String, roomCode: String) {
+        viewModelScope.launch {
+            try {
+                val likedPrefs = prefRepo
+                    .getPreferencesByUser(roomCode, username)
+                    .filter { it.liked }
+                val likedIds = likedPrefs.map { it.movieId }
+                val likedMovies = if (likedIds.isNotEmpty())
+                    movieRepo.getMoviesByIds(likedIds) else emptyList()
+
+                _userLikedMovies.value = likedMovies
+                _recError.value = null
+            } catch (e: Exception) {
+                _recError.value =
+                    "Impossibile reperire i like dell'utente per la stanza corrente: ${e.message}"
+            }
+        }
+    }
 
     fun onMovieSwipe(
         roomCode: String,
@@ -106,6 +131,18 @@ class RecommendationViewModel @Inject constructor(
 
             } catch (e: Exception) {
                 _recError.value = "Errore raccomandazione: ${e.localizedMessage}"
+            }
+        }
+    }
+
+    fun getRoomMatches(code: String) {
+        viewModelScope.launch {
+            try {
+                _roomMatches.value = prefRepo.getRoomMatches(code)
+                _recError.value = null
+            } catch (e: Exception) {
+                _recError.value =
+                    "Impossibile caricare i match per la stanza corrente: ${e.message}"
             }
         }
     }

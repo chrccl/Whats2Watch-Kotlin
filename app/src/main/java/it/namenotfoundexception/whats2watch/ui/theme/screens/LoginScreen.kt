@@ -1,4 +1,3 @@
-
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.foundation.background
@@ -141,13 +140,13 @@ fun LoginScreen(
                 singleLine = true,
                 enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor         = Color.White,
-                    unfocusedTextColor       = Color.White,
-                    focusedContainerColor    = Color.Transparent,
-                    unfocusedContainerColor  = Color.Transparent,
-                    focusedIndicatorColor    = Color.White,
-                    unfocusedIndicatorColor  = Color.Gray,
-                    cursorColor              = Color.White
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.White,
+                    unfocusedIndicatorColor = Color.Gray,
+                    cursorColor = Color.White
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -163,13 +162,13 @@ fun LoginScreen(
                 singleLine = true,
                 enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor         = Color.White,
-                    unfocusedTextColor       = Color.White,
-                    focusedContainerColor    = Color.Transparent,
-                    unfocusedContainerColor  = Color.Transparent,
-                    focusedIndicatorColor    = Color.White,
-                    unfocusedIndicatorColor  = Color.Gray,
-                    cursorColor              = Color.White
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.White,
+                    unfocusedIndicatorColor = Color.Gray,
+                    cursorColor = Color.White
                 ),
                 modifier = Modifier
                     .fillMaxWidth()

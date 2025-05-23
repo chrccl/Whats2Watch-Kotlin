@@ -1,4 +1,3 @@
-
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.foundation.background
@@ -183,13 +182,13 @@ fun RoomsScreen(
                             singleLine = true,
                             enabled = !isJoining,
                             colors = TextFieldDefaults.colors(
-                                focusedTextColor         = Color.White,
-                                unfocusedTextColor       = Color.White,
-                                focusedContainerColor    = Color.Transparent,
-                                unfocusedContainerColor  = Color.Transparent,
-                                focusedIndicatorColor    = Color.White,
-                                unfocusedIndicatorColor  = Color.Gray,
-                                cursorColor              = Color.White
+                                focusedTextColor = Color.White,
+                                unfocusedTextColor = Color.White,
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.White,
+                                unfocusedIndicatorColor = Color.Gray,
+                                cursorColor = Color.White
                             ),
                             modifier = Modifier
                                 .fillMaxWidth()

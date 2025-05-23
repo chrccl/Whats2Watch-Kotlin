@@ -1,4 +1,3 @@
-
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.foundation.background
@@ -140,13 +139,13 @@ fun RegisterScreen(
                 singleLine = true,
                 enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor         = Color.White,
-                    unfocusedTextColor       = Color.White,
-                    focusedContainerColor    = Color.Transparent,
-                    unfocusedContainerColor  = Color.Transparent,
-                    focusedIndicatorColor    = Color.White,
-                    unfocusedIndicatorColor  = Color.Gray,
-                    cursorColor              = Color.White
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.White,
+                    unfocusedIndicatorColor = Color.Gray,
+                    cursorColor = Color.White
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -165,13 +164,13 @@ fun RegisterScreen(
                 singleLine = true,
                 enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor         = Color.White,
-                    unfocusedTextColor       = Color.White,
-                    focusedContainerColor    = Color.Transparent,
-                    unfocusedContainerColor  = Color.Transparent,
-                    focusedIndicatorColor    = Color.White,
-                    unfocusedIndicatorColor  = Color.Gray,
-                    cursorColor              = Color.White
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.White,
+                    unfocusedIndicatorColor = Color.Gray,
+                    cursorColor = Color.White
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -190,13 +189,13 @@ fun RegisterScreen(
                 singleLine = true,
                 enabled = !isLoading,
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor         = Color.White,
-                    unfocusedTextColor       = Color.White,
-                    focusedContainerColor    = Color.Transparent,
-                    unfocusedContainerColor  = Color.Transparent,
-                    focusedIndicatorColor    = Color.White,
-                    unfocusedIndicatorColor  = Color.Gray,
-                    cursorColor              = Color.White
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.White,
+                    unfocusedIndicatorColor = Color.Gray,
+                    cursorColor = Color.White
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -231,15 +230,19 @@ fun RegisterScreen(
                         username.isEmpty() -> {
                             validationError = "Username is required"
                         }
+
                         password.isEmpty() -> {
                             validationError = "Password is required"
                         }
+
                         password != confirmPassword -> {
                             validationError = "Passwords do not match"
                         }
+
                         password.length < 4 -> {
                             validationError = "Password must be at least 4 characters"
                         }
+
                         else -> {
                             isLoading = true
                             validationError = null

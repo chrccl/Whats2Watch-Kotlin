@@ -35,6 +35,6 @@ interface RoomDao {
     suspend fun removeParticipants(code: String)
 
     @Query("SELECT * FROM rooms WHERE username_host = :username")
-    suspend fun getRoomsByUser(username: String) : List<Room>
+    suspend fun getRoomsByUser(username: String): List<Room>
 
 }

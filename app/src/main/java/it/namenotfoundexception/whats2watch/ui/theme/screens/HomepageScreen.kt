@@ -1,4 +1,3 @@
-
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.foundation.background
@@ -65,7 +64,6 @@ fun HomepageScreen(
     roomViewModel: RoomViewModel = hiltViewModel<RoomViewModel>(),
     onLogoutClick: () -> Unit,
     onRoomsClick: (roomCode: String, username: String) -> Unit,
-    onProfileClick: () -> Unit,
     onRoomMenuClick: () -> Unit
 ) {
     val currentUser by authViewModel.currentUser.collectAsState()
@@ -122,8 +120,7 @@ fun HomepageScreen(
                 onItemClick = { item ->
                     when (item.title) {
                         "Rooms" -> onRoomMenuClick() //da cambiare
-                        "Home" ->  fun () {}
-                        "Profile" -> onProfileClick()
+                        "Home" -> fun() {}
                     }
                 }
             )
@@ -132,7 +129,7 @@ fun HomepageScreen(
             val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
             FloatingActionButton(
                 onClick = {
-                    val code =(1..6)
+                    val code = (1..6)
                         .map { chars.random() }
                         .joinToString("")
                     roomViewModel.createRoom(code, currentUser!!.username)
@@ -156,7 +153,7 @@ fun HomepageScreen(
                 .background(Color(0xFF1A202C))
         ) {
             RecentRoomsSection(
-                rooms = rooms?: emptyList(),
+                rooms = rooms ?: emptyList(),
                 onRoomClick = { room ->
                     onRoomsClick(room.code, currentUser!!.username)
                 },
