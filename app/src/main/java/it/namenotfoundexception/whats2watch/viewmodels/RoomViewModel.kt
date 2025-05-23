@@ -30,6 +30,7 @@ class RoomViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 roomRepo.saveRoom(Room(code = code, usernameHost = hostUsername))
+                roomRepo.insertParticipant(RoomParticipant(roomCode = code, username = hostUsername))
                 _roomError.value = null
             } catch (e: Exception) {
                 _roomError.value = "Errore creazione stanza: ${e.message}"

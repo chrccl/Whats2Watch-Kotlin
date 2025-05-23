@@ -28,10 +28,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -57,8 +59,32 @@ fun HomepageScreen(
 ) {
     val backgroundColor = Color(0xFF1A1A1A)
     val currentUser by authViewModel.currentUser.collectAsState()
-    roomViewModel.getRoomsByUser(currentUser!!.username)
     val rooms by roomViewModel.roomByUsers.collectAsState()
+
+    // Handle loading state and fetch rooms when user is available
+    LaunchedEffect(currentUser) {
+        currentUser?.let { user ->
+            roomViewModel.getRoomsByUser(user.username)
+        }
+    }
+
+    // Create a local variable to enable smart casting
+    val user = currentUser
+
+    // Show loading screen if user is not loaded yet
+    if (user == null) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(backgroundColor),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(
+                color = Color(0xFFE53935)
+            )
+        }
+        return
+    }
 
     Box(
         modifier = Modifier
@@ -85,13 +111,11 @@ fun HomepageScreen(
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    currentUser?.let { user ->
-                        Text(
-                            text = "Welcome, ${user.username}",
-                            color = Color.Gray,
-                            fontSize = 14.sp
-                        )
-                    }
+                    Text(
+                        text = "Welcome, ${user.username}",
+                        color = Color.Gray,
+                        fontSize = 14.sp
+                    )
                 }
 
                 Button(
@@ -109,7 +133,7 @@ fun HomepageScreen(
             RecentRoomsSection(
                 rooms = rooms ?: emptyList(),
                 onRoomClick = { room ->
-                    onRoomsClick(room.code, currentUser!!.username)
+                    onRoomsClick(room.code, user.username)
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -122,8 +146,8 @@ fun HomepageScreen(
                 val code = (1..6)
                     .map { chars.random() }
                     .joinToString("")
-                roomViewModel.createRoom(code, currentUser!!.username)
-                onRoomsClick(code, currentUser!!.username)
+                roomViewModel.createRoom(code, user.username)
+                onRoomsClick(code, user.username)
             },
             containerColor = Color(0xFFE53935),
             contentColor = Color.White,
@@ -164,7 +188,7 @@ fun RecentRoomsSection(
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
-        if(rooms.size > 0){
+        if(rooms.isNotEmpty()){
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(bottom = 16.dp)
@@ -176,9 +200,9 @@ fun RecentRoomsSection(
                     )
                 }
             }
-        }else{
+        } else {
             Text(
-                text = "No rooms founded",
+                text = "No rooms found",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White,
@@ -194,8 +218,11 @@ fun RoomCard(
     onClick: () -> Unit,
     roomViewModel: RoomViewModel = hiltViewModel<RoomViewModel>()
 ) {
-    roomViewModel.loadRoom(room.code)
     val roomWithUser by roomViewModel.roomData.collectAsState()
+
+    LaunchedEffect(room.code) {
+        roomViewModel.loadRoom(room.code)
+    }
 
     Card(
         onClick = onClick,
@@ -286,17 +313,3 @@ fun BottomNavigationHomepage(
         }
     }
 }
-
-// Preview
-//@Preview(showBackground = true)
-//@Composable
-//fun HomepageScreenPreview() {
-//    MaterialTheme {
-//        HomepageScreen(
-//            onLogoutClick = { /* no-op for preview */ },
-//            onRoomsClick = { /* no-op for preview */ },
-//            onProfileClick = {}
-//            onR
-//        )
-//    }
-//}

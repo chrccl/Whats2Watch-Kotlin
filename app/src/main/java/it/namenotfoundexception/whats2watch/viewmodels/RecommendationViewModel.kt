@@ -11,7 +11,9 @@ import it.namenotfoundexception.whats2watch.repositories.PreferenceRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class RecommendationViewModel @Inject constructor(
@@ -20,7 +22,7 @@ class RecommendationViewModel @Inject constructor(
     private val prefRepo: PreferenceRepository
 ) : ViewModel() {
 
-    private val _suggestions = MutableStateFlow<List<Movie>>(emptyList())
+    private val _suggestions = MutableStateFlow<List<Movie>>(mutableListOf<Movie>())
     val suggestions: StateFlow<List<Movie>> = _suggestions
 
     private val _roomMatches = MutableStateFlow<List<Movie>?>(null)
@@ -54,16 +56,17 @@ class RecommendationViewModel @Inject constructor(
     fun onMovieSwipe(
         roomCode: String,
         username: String,
-        movieId: String,
+        movie: Movie,
         liked: Boolean
     ) {
         viewModelScope.launch {
             try {
+                movieRepo.saveMovie(movie)
                 prefRepo.savePreference(
                     Preference(
                         roomCode = roomCode,
                         participantName = username,
-                        movieId = movieId,
+                        movieId = movie.imdbID,
                         liked = liked
                     )
                 )
@@ -94,9 +97,14 @@ class RecommendationViewModel @Inject constructor(
                 val avgYear = likedMovies
                     .mapNotNull { it.year.toIntOrNull() }
                     .takeIf { it.isNotEmpty() }?.average()?.toInt()
-                val (gteDate, lteDate) = avgYear?.let {
+                var (gteDate, lteDate) = avgYear?.let {
                     "${(it - 5).coerceAtLeast(1950)}-01-01" to "${it + 5}-12-31"
                 } ?: (null to null)
+
+                if(gteDate == null){
+                    val year = Random.nextInt(1970, LocalDate.now().year-1)
+                    gteDate = "$year-01-01"
+                }
 
                 // 3) Estrai top 3 generi, attori e top regista
                 val topGenres = topN(likedMovies.flatMap { it.genre.orEmpty().split(", ") }, 3)

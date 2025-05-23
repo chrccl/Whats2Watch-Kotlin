@@ -27,6 +27,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -79,12 +80,11 @@ fun SwipeScreen(
     onLogoutClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    var batchCount = 0
-    val threshold = 10
     val backgroundColor = Color(0xFF1A1A1A)
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
+    var batchCount by remember { mutableIntStateOf(0) }
     var offsetX by remember { mutableFloatStateOf(0f) }
     var isDragging by remember { mutableStateOf(false) }
     var showMovieDetails by remember { mutableStateOf(false) }
@@ -100,25 +100,6 @@ fun SwipeScreen(
     // Carica le raccomandazioni quando il componente viene montato
     LaunchedEffect(roomCode, username) {
         viewModel.loadNextBatch(roomCode, username)
-    }
-
-    // Movie placeholder per quando non ci sono suggerimenti
-    val currentMovie = if (suggestions.isNotEmpty()) {
-        suggestions[0]
-    } else {
-        Movie(
-            imdbID = "placeholder",
-            title = "Loading...",
-            year = "2024",
-            runtime = null,
-            genre = null,
-            director = null,
-            actors = null,
-            plot = "Loading recommendations...",
-            awards = null,
-            poster = "https://via.placeholder.com/300x450/333/FFF?text=Loading",
-            imdbRating = null
-        )
     }
 
     Box(
@@ -217,7 +198,7 @@ fun SwipeScreen(
                                     showMovieDetails = true
                                 }
                             }
-                            .pointerInput(currentMovie.imdbID) {
+                            .pointerInput(suggestions[batchCount].imdbID) {
                                 detectDragGestures(
                                     onDragStart = { isDragging = true },
                                     onDragEnd = {
@@ -228,7 +209,7 @@ fun SwipeScreen(
                                                 viewModel.onMovieSwipe(
                                                     roomCode,
                                                     username,
-                                                    currentMovie.imdbID,
+                                                    suggestions[batchCount],
                                                     true
                                                 )
                                                 batchCount++
@@ -240,7 +221,7 @@ fun SwipeScreen(
                                                 viewModel.onMovieSwipe(
                                                     roomCode,
                                                     username,
-                                                    currentMovie.imdbID,
+                                                    suggestions[batchCount],
                                                     false
                                                 )
                                                 batchCount++
@@ -252,7 +233,7 @@ fun SwipeScreen(
                                                 offsetX = 0f
                                             }
                                         }
-                                        if (batchCount > threshold) {
+                                        if (batchCount > suggestions.size - 10) {
                                             viewModel.loadNextBatch(roomCode, username)
                                             batchCount = 0
                                         }
@@ -272,8 +253,8 @@ fun SwipeScreen(
                         ) {
                             // Movie Poster
                             Image(
-                                painter = rememberAsyncImagePainter(currentMovie.poster),
-                                contentDescription = currentMovie.title,
+                                painter = rememberAsyncImagePainter(suggestions[batchCount].poster),
+                                contentDescription = suggestions[batchCount].title,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
@@ -286,7 +267,7 @@ fun SwipeScreen(
                                 modifier = Modifier.padding(16.dp)
                             ) {
                                 Text(
-                                    text = currentMovie.title,
+                                    text = suggestions[batchCount].title,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center,
@@ -299,15 +280,13 @@ fun SwipeScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceEvenly
                                 ) {
-                                    currentMovie.year.let { year ->
-                                        Text(
-                                            text = year,
-                                            fontSize = 14.sp,
-                                            color = Color.Gray
-                                        )
-                                    }
+                                    Text(
+                                        text = suggestions[batchCount].year,
+                                        fontSize = 14.sp,
+                                        color = Color.Gray
+                                    )
 
-                                    currentMovie.imdbRating?.let { rating ->
+                                    suggestions[batchCount].imdbRating?.let { rating ->
                                         Text(
                                             text = "★ $rating",
                                             fontSize = 14.sp,
@@ -343,7 +322,7 @@ fun SwipeScreen(
                                 viewModel.onMovieSwipe(
                                     roomCode,
                                     username,
-                                    currentMovie.imdbID,
+                                    suggestions[batchCount],
                                     false
                                 )
                                 viewModel.loadNextBatch(roomCode, username)
@@ -363,7 +342,7 @@ fun SwipeScreen(
                                 viewModel.onMovieSwipe(
                                     roomCode,
                                     username,
-                                    currentMovie.imdbID,
+                                    suggestions[batchCount],
                                     true
                                 )
                                 viewModel.loadNextBatch(roomCode, username)
@@ -433,7 +412,7 @@ fun SwipeScreen(
             containerColor = Color(0xFFE53935)
         ) {
             Icon(
-                imageVector = Icons.Default.List,
+                imageVector = Icons.Default.Star,
                 contentDescription = "View Matches",
                 tint = Color.White
             )
@@ -443,7 +422,7 @@ fun SwipeScreen(
     // Modal per i dettagli del film
     if (showMovieDetails && suggestions.isNotEmpty()) {
         MovieDetailsModal(
-            movie = currentMovie,
+            movie = suggestions[batchCount],
             onDismiss = { showMovieDetails = false }
         )
     }
@@ -544,14 +523,6 @@ fun MovieDetailsModal(
                                 color = Color(0xFFFFD700)
                             )
                         }
-
-                        movie.runtime?.let { runtime ->
-                            Text(
-                                text = runtime,
-                                fontSize = 16.sp,
-                                color = Color.Gray
-                            )
-                        }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -574,10 +545,6 @@ fun MovieDetailsModal(
                     movie.plot?.let { plot ->
                         DetailSection("Plot", plot)
                         Spacer(modifier = Modifier.height(12.dp))
-                    }
-
-                    movie.awards?.let { awards ->
-                        DetailSection("Awards", awards)
                     }
                 }
             }

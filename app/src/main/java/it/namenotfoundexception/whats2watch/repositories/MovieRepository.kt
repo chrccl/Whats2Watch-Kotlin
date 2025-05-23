@@ -66,7 +66,7 @@ class MovieRepository @Inject constructor(
             page = page
         )
 
-        return resp.results.map { it.toMovieEntity() }
+        return resp.results.map { fetchAndMapMovie(it.id) }
     }
 
     suspend fun searchMovies(title: String, page: Int = 1): List<Movie> =

@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import it.namenotfoundexception.whats2watch.BuildConfig
 import it.namenotfoundexception.whats2watch.api.TMDBService
+import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -25,11 +26,11 @@ object NetworkModule {
         val apiKey = BuildConfig.TMDB_API_KEY
         val interceptor = Interceptor { chain ->
             val original = chain.request()
-            val url: HttpUrl = original.url
+            val headers: Headers = original.headers
                 .newBuilder()
-                .addQueryParameter("api_key", apiKey)
+                .add("Authorization", "Bearer $apiKey")
                 .build()
-            val request: Request = original.newBuilder().url(url).build()
+            val request: Request = original.newBuilder().headers(headers).build()
             chain.proceed(request)
         }
         return OkHttpClient.Builder()
