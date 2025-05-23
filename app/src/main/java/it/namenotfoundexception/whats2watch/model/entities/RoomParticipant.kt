@@ -3,6 +3,7 @@ package it.namenotfoundexception.whats2watch.model.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 
 @Entity(
     tableName = "room_participants",
@@ -20,6 +21,10 @@ import androidx.room.ForeignKey
             childColumns = ["member"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["member"]),
+        Index(value = ["room_code"])
     ]
 )
 data class RoomParticipant(

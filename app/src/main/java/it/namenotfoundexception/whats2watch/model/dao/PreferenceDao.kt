@@ -35,5 +35,5 @@ interface PreferenceDao {
         )
     """
     )
-    suspend fun getRoomMatches(roomCode: String): List<Movie>?
+    suspend fun getRoomMatches(roomCode: String): List<Movie>
 }
