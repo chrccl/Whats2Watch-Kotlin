@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -49,7 +48,6 @@ import it.namenotfoundexception.whats2watch.viewmodels.RoomViewModel
 
 @Composable
 fun RoomsScreen(
-    modifier: Modifier = Modifier,
     authViewModel: AuthViewModel = hiltViewModel(),
     roomViewModel: RoomViewModel = hiltViewModel(),
     onLogoutClick: () -> Unit,
@@ -292,7 +290,6 @@ fun BottomNavigationRooms(
 @Composable
 fun RoomsScreenPreview() {
     RoomsScreen(
-        modifier = Modifier,
         onLogoutClick = { /* no-op for preview */ },
         onJoinRoomSuccess = { roomCode, username ->
             println("Join room: $roomCode for user: $username")

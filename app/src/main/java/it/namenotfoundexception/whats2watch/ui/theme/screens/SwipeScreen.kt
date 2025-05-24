@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -74,7 +73,6 @@ import kotlin.math.abs
 fun SwipeScreen(
     roomCode: String,
     username: String,
-    modifier: Modifier = Modifier,
     viewModel: RecommendationViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
     onLogoutClick: () -> Unit,

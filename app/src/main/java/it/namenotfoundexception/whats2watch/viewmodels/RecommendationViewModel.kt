@@ -243,7 +243,7 @@ class RecommendationViewModel @Inject constructor(
     ): List<Movie> {
         try {
             // Calcola preferenze con maggiore flessibilità
-            val topGenres = topN(likedMovies.flatMap { it.genre.orEmpty().split(", ") }, 2)
+            val topGenres = top2(likedMovies.flatMap { it.genre.orEmpty().split(", ") })
 
             // Range anni più ampio (±10 anni invece di ±5)
             val avgYear = likedMovies
@@ -297,7 +297,11 @@ class RecommendationViewModel @Inject constructor(
             movieRepo.discoverFilteredMovies(
                 genreIds = randomGenres,
                 voteAverageGte = 6.0f,
-                sortBy = listOf("popularity.desc", "vote_average.desc", "release_date.desc").random(),
+                sortBy = listOf(
+                    "popularity.desc",
+                    "vote_average.desc",
+                    "release_date.desc"
+                ).random(),
                 page = Random.nextInt(1, 4)
             ).filter { it.imdbID !in seenIds }
         } catch (_: Exception) {
@@ -388,12 +392,12 @@ class RecommendationViewModel @Inject constructor(
     }
 
     /** Calcola i N elementi più frequenti nella lista */
-    private fun topN(list: List<String>, n: Int): List<String> =
+    private fun top2(list: List<String>): List<String> =
         list.filter { it.isNotBlank() }
             .groupingBy { it.trim() }
             .eachCount()
             .entries
             .sortedByDescending { it.value }
-            .take(n)
+            .take(2)
             .map { it.key }
 }

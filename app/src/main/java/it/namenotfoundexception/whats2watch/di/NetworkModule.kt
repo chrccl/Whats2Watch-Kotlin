@@ -7,7 +7,6 @@ import dagger.hilt.components.SingletonComponent
 import it.namenotfoundexception.whats2watch.BuildConfig
 import it.namenotfoundexception.whats2watch.api.TMDBService
 import okhttp3.Headers
-import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request

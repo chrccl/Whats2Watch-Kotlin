@@ -50,8 +50,7 @@ fun Navigation(
                 },
                 onRegisterClick = {
                     navController.navigate(Screen.Register.route)
-                },
-                modifier = modifier
+                }
             )
         }
 
@@ -65,8 +64,7 @@ fun Navigation(
                 },
                 onLoginClick = {
                     navController.popBackStack()
-                },
-                modifier = modifier
+                }
             )
         }
 

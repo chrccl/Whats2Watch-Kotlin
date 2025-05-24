@@ -1,11 +1,9 @@
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -40,7 +38,6 @@ import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier,
     viewModel: AuthViewModel = hiltViewModel(),
     onRegisterSuccess: () -> Unit,
     onLoginClick: () -> Unit

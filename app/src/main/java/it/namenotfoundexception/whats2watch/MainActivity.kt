@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import it.namenotfoundexception.whats2watch.ui.theme.screens.Navigation
 import it.namenotfoundexception.whats2watch.ui.theme.Whats2WatchTheme
+import it.namenotfoundexception.whats2watch.ui.theme.screens.Navigation
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
