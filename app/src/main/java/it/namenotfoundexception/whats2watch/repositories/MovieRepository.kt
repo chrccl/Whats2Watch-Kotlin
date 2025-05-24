@@ -15,10 +15,6 @@ class MovieRepository @Inject constructor(
         movieDao.insertMovie(movie)
     }
 
-    suspend fun getMovieById(id: String): Movie {
-        return movieDao.getMovieById(id)
-    }
-
     suspend fun getMoviesByIds(ids: List<String>): List<Movie> = movieDao.getMoviesByIds(ids)
 
     suspend fun fetchAndMapMovie(movieId: Int): Movie {

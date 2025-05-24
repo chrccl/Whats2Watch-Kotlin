@@ -18,9 +18,6 @@ interface RoomDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertParticipant(part: RoomParticipant)
 
-    @Insert(onConflict = REPLACE)
-    suspend fun insertParticipants(parts: List<RoomParticipant>)
-
     @Query("SELECT * FROM rooms WHERE code = :code")
     suspend fun getRoomByCode(code: String): Room
 
@@ -30,9 +27,6 @@ interface RoomDao {
 
     @Query("DELETE FROM room_participants WHERE room_code = :code AND member = :username")
     suspend fun removeParticipant(code: String, username: String)
-
-    @Query("DELETE FROM room_participants WHERE room_code = :code")
-    suspend fun removeParticipants(code: String)
 
     @Query("SELECT * FROM rooms WHERE username_host = :username")
     suspend fun getRoomsByUser(username: String): List<Room>

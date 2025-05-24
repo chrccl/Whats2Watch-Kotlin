@@ -15,7 +15,4 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE username = :username")
     suspend fun getUserByUsername(username: String): User?
 
-    @Query("DELETE FROM users WHERE username = :username")
-    suspend fun deleteUserByUsername(username: String)
-
 }

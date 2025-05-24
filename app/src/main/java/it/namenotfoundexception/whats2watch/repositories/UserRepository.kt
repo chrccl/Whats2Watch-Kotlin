@@ -20,8 +20,4 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun deleteUser(username: String) {
-        userDao.deleteUserByUsername(username)
-    }
-
 }

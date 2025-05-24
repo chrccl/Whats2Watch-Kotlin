@@ -14,10 +14,6 @@ class RoomRepository @Inject constructor(
         roomDao.insertRoom(room)
     }
 
-    suspend fun insertParticipants(participants: List<RoomParticipant>) {
-        roomDao.insertParticipants(participants)
-    }
-
     suspend fun insertParticipant(participant: RoomParticipant) {
         roomDao.insertParticipant(participant)
     }
@@ -28,10 +24,6 @@ class RoomRepository @Inject constructor(
 
     suspend fun removeParticipant(code: String, username: String) {
         roomDao.removeParticipant(code, username)
-    }
-
-    suspend fun removeParticipants(code: String) {
-        roomDao.removeParticipants(code)
     }
 
     suspend fun getRoomsByUser(username: String): List<Room>? {

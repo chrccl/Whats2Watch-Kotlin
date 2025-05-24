@@ -21,7 +21,4 @@ class PreferenceRepository @Inject constructor(
         return preferenceDao.getRoomMatches(code)
     }
 
-    suspend fun getPreferencesByRoom(code: String): List<Preference> {
-        return preferenceDao.getPreferencesByRoom(code)
-    }
 }
