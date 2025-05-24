@@ -44,7 +44,7 @@ class RecommendationViewModel @Inject constructor(
     private var lastLoadTime = 0L
     private var cachedUserPrefs: List<Preference>? = null
     private val cacheValidityMs = 30000L // 30 secondi
-    private var isLoadingNewBatch = false // NUOVO per evitare chiamate multiple
+    private var isLoadingNewBatch = false // per evitare chiamate multiple
 
     fun getLikedMoviesByUser(username: String, roomCode: String) {
         viewModelScope.launch {
