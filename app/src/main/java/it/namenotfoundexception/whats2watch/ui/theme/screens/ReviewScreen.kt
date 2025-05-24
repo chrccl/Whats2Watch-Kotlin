@@ -76,6 +76,9 @@ fun ReviewScreen(
     var searchQuery by remember { mutableStateOf("") }
     var showReviewDialog by remember { mutableStateOf(false) }
     var selectedMovie by remember { mutableStateOf<Movie?>(null) }
+    var showReviewsDialog by remember { mutableStateOf(false) }
+    var selectedMovieForReviews by remember { mutableStateOf<Movie?>(null) }
+    val reviewsForMovie by reviewViewModel.reviewsForMovie.collectAsState()
 
     val currentUser by authViewModel.currentUser.collectAsState()
     val searchResults by reviewViewModel.searchResults.collectAsState()
@@ -207,6 +210,11 @@ fun ReviewScreen(
                                     onCommentClick = {
                                         selectedMovie = movie
                                         showReviewDialog = true
+                                    },
+                                    onViewReviewsClick = {
+                                        selectedMovieForReviews = movie
+                                        reviewViewModel.loadReviewsForMovie(movie.imdbID)
+                                        showReviewsDialog = true
                                     }
                                 )
                             }
@@ -235,13 +243,26 @@ fun ReviewScreen(
                 }
             )
         }
+
+        // TMDB Reviews Dialog
+        if (showReviewsDialog && selectedMovieForReviews != null) {
+            ReviewsDialog(
+                movie = selectedMovieForReviews!!,
+                reviews = reviewsForMovie,
+                onDismiss = {
+                    showReviewsDialog = false
+                    selectedMovieForReviews = null
+                }
+            )
+        }
     }
 }
 
 @Composable
 fun MovieSearchItem(
     movie: Movie,
-    onCommentClick: () -> Unit
+    onCommentClick: () -> Unit,
+    onViewReviewsClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -321,18 +342,41 @@ fun MovieSearchItem(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Button(
-                    onClick = onCommentClick,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE53935)
-                    ),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier.height(32.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(
-                        text = "Comment",
-                        fontSize = 12.sp
-                    )
+                    Button(
+                        onClick = onCommentClick,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFE53935)
+                        ),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(32.dp)
+                    ) {
+                        Text(
+                            text = "Comment",
+                            fontSize = 12.sp
+                        )
+                    }
+
+                    Button(
+                        onClick = onViewReviewsClick,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF4CAF50)
+                        ),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(32.dp)
+                    ) {
+                        Text(
+                            text = "Reviews",
+                            fontSize = 12.sp
+                        )
+                    }
                 }
             }
         }
@@ -420,13 +464,13 @@ fun ReviewDialog(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    for (i in 1..5) {
+                    for (i in 1..10) {
                         Icon(
                             imageVector = Icons.Default.Star,
                             contentDescription = "Star $i",
                             tint = if (i <= rating) Color(0xFFFFD700) else Color.Gray,
                             modifier = Modifier
-                                .size(32.dp)
+                                .size(16.dp)
                                 .clickable { rating = i.toFloat() }
                         )
                     }
@@ -513,6 +557,115 @@ fun ReviewDialog(
 }
 
 @Composable
+fun ReviewsDialog(
+    movie: Movie,
+    reviews: List<Review>,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.8f)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF2A2A2A)
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                // Header
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Reviews for ${movie.title}",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    IconButton(onClick = onDismiss) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close",
+                            tint = Color.Gray
+                        )
+                    }
+                }
+
+                // Reviews list
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(vertical = 8.dp)
+                ) {
+                    items(reviews) { review ->
+                        ReviewItem(review = review)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ReviewItem(review: Review) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF3A3A3A)
+        ),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = review.user,
+                    color = Color.White,
+                    fontWeight = FontWeight.Medium
+                )
+
+                if (review.rating > 0) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = "Rating",
+                            tint = Color(0xFFFFD700),
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = review.rating.toString(),
+                            color = Color.White,
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = review.comment,
+                color = Color.Gray,
+                fontSize = 14.sp
+            )
+        }
+    }
+}
+
+@Composable
 fun BottomNavigationReview(
     modifier: Modifier = Modifier,
     onHomeClick: () -> Unit,
@@ -574,3 +727,4 @@ fun BottomNavigationReview(
         }
     }
 }
+

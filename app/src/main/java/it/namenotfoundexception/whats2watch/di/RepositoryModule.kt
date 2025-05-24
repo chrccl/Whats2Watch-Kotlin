@@ -38,7 +38,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun reviewRepo(reviewDao: ReviewDao): ReviewRepository = ReviewRepository(reviewDao)
+    fun reviewRepo(reviewDao: ReviewDao, api: TMDBService): ReviewRepository =
+        ReviewRepository(reviewDao, api)
 
     @Provides
     @Singleton

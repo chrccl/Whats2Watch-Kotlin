@@ -27,6 +27,13 @@ interface TMDBService {
         @Path("movie_id") id: Int
     ): TmdbCreditsResponse
 
+    @GET("movie/{movie_id}/reviews")
+    suspend fun getMovieReviews(
+        @Path("movie_id") id: Int,
+        @Query("page") page: Int = 1,
+        @Query("language") language: String = "en-US"
+    ): TmdbReviewsResponse
+
     // discover con filtri
     @GET("discover/movie")
     suspend fun discoverMovies(

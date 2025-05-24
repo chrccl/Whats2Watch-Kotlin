@@ -65,3 +65,21 @@ data class TmdbPersonDto(
     val id: Int,
     val name: String
 )
+
+data class TmdbReviewsResponse(
+    val page: Int,
+    val results: List<TmdbReviewDto>,
+    val total_pages: Int,
+    val total_results: Int
+)
+
+data class TmdbReviewDto(
+    val author: String,
+    val content: String,
+    val created_at: String,
+    val author_details: TmdbAuthorDetails?
+)
+
+data class TmdbAuthorDetails(
+    val rating: Float?
+)

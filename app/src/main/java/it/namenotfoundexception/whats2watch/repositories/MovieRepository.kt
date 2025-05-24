@@ -67,4 +67,5 @@ class MovieRepository @Inject constructor(
 
     suspend fun searchMovies(title: String, page: Int = 1): List<Movie> =
         api.searchMovies(title, page).results.map { it.toMovieEntity() }
+
 }
