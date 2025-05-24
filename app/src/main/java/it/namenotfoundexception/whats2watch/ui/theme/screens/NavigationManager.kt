@@ -17,6 +17,7 @@ sealed class Screen(val route: String) {
     object Register : Screen("register")
     object Homepage : Screen("homepage")
     object Rooms : Screen("rooms")
+    object Reviews : Screen("reviews")
     object Swipe : Screen("swipe/{roomCode}/{username}") {
         fun createRoute(roomCode: String, username: String) = "swipe/$roomCode/$username"
     }
@@ -82,8 +83,10 @@ fun Navigation(
                 },
                 onRoomMenuClick = {
                     navController.navigate(Screen.Rooms.route)
+                },
+                onReviewsClick = {
+                    navController.navigate(Screen.Reviews.route)
                 }
-
             )
         }
 
@@ -101,8 +104,30 @@ fun Navigation(
                     navController.navigate(Screen.Swipe.createRoute(roomCode, username))
                 },
                 onHomeClick = {
-                    navController.popBackStack()
+                    navController.navigate(Screen.Homepage.route)
+                },
+                onReviewsClick = {
+                    navController.navigate(Screen.Reviews.route)
                 }
+            )
+        }
+
+        composable(Screen.Reviews.route) {
+            ReviewScreen(
+                authViewModel = authViewModel,
+                reviewViewModel = hiltViewModel(),
+                onLogoutClick = {
+                    authViewModel.logout()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Homepage.route) { inclusive = true }
+                    }
+                },
+                onHomeClick = {
+                    navController.navigate(Screen.Homepage.route)
+                },
+                onRoomsClick = {
+                    navController.navigate(Screen.Rooms.route)
+                },
             )
         }
 
@@ -114,7 +139,6 @@ fun Navigation(
                 roomCode = roomCode,
                 username = username,
                 viewModel = hiltViewModel<RecommendationViewModel>(),
-                authViewModel = authViewModel,
                 onLogoutClick = {
                     authViewModel.logout()
                     navController.navigate(Screen.Login.route) {

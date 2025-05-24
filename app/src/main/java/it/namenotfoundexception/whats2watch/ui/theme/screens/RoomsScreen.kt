@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -38,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,7 +52,8 @@ fun RoomsScreen(
     roomViewModel: RoomViewModel = hiltViewModel(),
     onLogoutClick: () -> Unit,
     onJoinRoomSuccess: (String, String) -> Unit,
-    onHomeClick: () -> Unit
+    onHomeClick: () -> Unit,
+    onReviewsClick: () -> Unit
 ) {
     val backgroundColor = Color(0xFF1A1A1A)
 
@@ -235,7 +236,8 @@ fun RoomsScreen(
         // Bottom Navigation
         BottomNavigationRooms(
             modifier = Modifier.align(Alignment.BottomCenter),
-            onHomeClick = onHomeClick
+            onHomeClick = onHomeClick,
+            onReviewsClick = onReviewsClick
         )
     }
 }
@@ -243,7 +245,8 @@ fun RoomsScreen(
 @Composable
 fun BottomNavigationRooms(
     modifier: Modifier = Modifier,
-    onHomeClick: () -> Unit
+    onHomeClick: () -> Unit,
+    onReviewsClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -283,17 +286,21 @@ fun BottomNavigationRooms(
                 tint = Color(0xFFE53935)
             )
         }
-    }
-}
 
-@Preview(showBackground = true, name = "Rooms Screen Preview")
-@Composable
-fun RoomsScreenPreview() {
-    RoomsScreen(
-        onLogoutClick = { /* no-op for preview */ },
-        onJoinRoomSuccess = { roomCode, username ->
-            println("Join room: $roomCode for user: $username")
-        },
-        onHomeClick = { /* no-op for preview */ }
-    )
+        // Reviews Icon
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFE53935))
+                .clickable { onReviewsClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = "Reviews",
+                tint = Color.White
+            )
+        }
+    }
 }

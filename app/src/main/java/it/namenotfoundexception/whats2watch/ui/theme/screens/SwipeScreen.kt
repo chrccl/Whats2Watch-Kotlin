@@ -65,7 +65,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import it.namenotfoundexception.whats2watch.model.entities.Movie
-import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 import it.namenotfoundexception.whats2watch.viewmodels.RecommendationViewModel
 import kotlin.math.abs
 
@@ -74,7 +73,6 @@ fun SwipeScreen(
     roomCode: String,
     username: String,
     viewModel: RecommendationViewModel = hiltViewModel(),
-    authViewModel: AuthViewModel = hiltViewModel(),
     onLogoutClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -91,7 +89,6 @@ fun SwipeScreen(
 
     val suggestions by viewModel.suggestions.collectAsState()
     val recError by viewModel.recError.collectAsState()
-    val currentUser by authViewModel.currentUser.collectAsState()
     val roomMatches by viewModel.roomMatches.collectAsState()
     val userLikedMovies by viewModel.userLikedMovies.collectAsState()
 

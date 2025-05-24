@@ -35,7 +35,7 @@ data class Review(
     val movieId: String,
 
     @ColumnInfo(name = "rating")
-    val rating: Float,              // es. da 0.0 a 5.0
+    val rating: Float,
 
     @ColumnInfo(name = "comment")
     val comment: String

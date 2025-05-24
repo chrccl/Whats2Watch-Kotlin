@@ -16,7 +16,4 @@ class ReviewRepository @Inject constructor(
         return reviewDao.getMovieReviews(id)
     }
 
-    suspend fun getReviewsByUser(username: String): List<Review> {
-        return reviewDao.getReviewsByUser(username)
-    }
 }

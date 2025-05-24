@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -54,7 +55,8 @@ fun HomepageScreen(
     roomViewModel: RoomViewModel = hiltViewModel<RoomViewModel>(),
     onLogoutClick: () -> Unit,
     onRoomsClick: (roomCode: String, username: String) -> Unit,
-    onRoomMenuClick: () -> Unit
+    onRoomMenuClick: () -> Unit,
+    onReviewsClick: () -> Unit
 ) {
     val backgroundColor = Color(0xFF1A1A1A)
     val currentUser by authViewModel.currentUser.collectAsState()
@@ -163,7 +165,8 @@ fun HomepageScreen(
         // Bottom Navigation
         BottomNavigationHomepage(
             modifier = Modifier.align(Alignment.BottomCenter),
-            onRoomsClick = onRoomMenuClick
+            onRoomsClick = onRoomMenuClick,
+            onReviewsClick = onReviewsClick
         )
     }
 }
@@ -270,7 +273,8 @@ fun RoomCard(
 @Composable
 fun BottomNavigationHomepage(
     modifier: Modifier = Modifier,
-    onRoomsClick: () -> Unit
+    onRoomsClick: () -> Unit,
+    onReviewsClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -307,6 +311,22 @@ fun BottomNavigationHomepage(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Rooms",
+                tint = Color.White
+            )
+        }
+
+        // Reviews Icon
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFE53935))
+                .clickable { onReviewsClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = "Reviews",
                 tint = Color.White
             )
         }
