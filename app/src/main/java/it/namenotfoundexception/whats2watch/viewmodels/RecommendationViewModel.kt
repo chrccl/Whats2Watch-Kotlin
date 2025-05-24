@@ -38,12 +38,13 @@ class RecommendationViewModel @Inject constructor(
     private val _recError = MutableStateFlow<String?>(null)
     val recError: StateFlow<String?> = _recError
 
-    // Cache per migliorare le performance
-    private var cachedSuggestions = mutableListOf<Movie>()
+    // Cache per migliorare le performance - thread safe
+    private val cachedSuggestions = mutableListOf<Movie>()
     private var currentBatchIndex = 0
     private var lastLoadTime = 0L
     private var cachedUserPrefs: List<Preference>? = null
     private val cacheValidityMs = 30000L // 30 secondi
+    private var isLoadingNewBatch = false // NUOVO per evitare chiamate multiple
 
     fun getLikedMoviesByUser(username: String, roomCode: String) {
         viewModelScope.launch {
@@ -98,45 +99,59 @@ class RecommendationViewModel @Inject constructor(
         username: String,
         pageSize: Int = 20
     ) {
+        // Evita chiamate multiple simultanee
+        if (isLoadingNewBatch) return
+
         viewModelScope.launch {
             try {
+                isLoadingNewBatch = true
                 val currentTime = System.currentTimeMillis()
 
-                // Se abbiamo ancora film nella cache, usali
-                if (cachedSuggestions.size > currentBatchIndex + pageSize) {
-                    val nextBatch = cachedSuggestions.subList(
-                        currentBatchIndex,
-                        (currentBatchIndex + pageSize).coerceAtMost(cachedSuggestions.size)
-                    )
-                    _suggestions.value = nextBatch
-                    currentBatchIndex += pageSize
-                    return@launch
-                }
+                // Thread-safe access alla cache
+                synchronized(cachedSuggestions) {
+                    // Se abbiamo ancora film nella cache, usali
+                    if (cachedSuggestions.size > currentBatchIndex + pageSize) {
+                        val nextBatch = cachedSuggestions.subList(
+                            currentBatchIndex,
+                            (currentBatchIndex + pageSize).coerceAtMost(cachedSuggestions.size)
+                        ).toList() // Crea copia per thread safety
 
-                // Carica nuovi suggerimenti solo se necessario
-                if (currentTime - lastLoadTime < cacheValidityMs && cachedSuggestions.isNotEmpty()) {
-                    // Usa i film rimanenti dalla cache
-                    val remainingMovies = cachedSuggestions.subList(currentBatchIndex, cachedSuggestions.size)
-                    if (remainingMovies.isNotEmpty()) {
-                        _suggestions.value = remainingMovies.take(pageSize)
-                        currentBatchIndex = cachedSuggestions.size
+                        _suggestions.value = nextBatch
+                        currentBatchIndex += pageSize
                         return@launch
+                    }
+
+                    // Carica nuovi suggerimenti solo se necessario
+                    if (currentTime - lastLoadTime < cacheValidityMs && cachedSuggestions.isNotEmpty()) {
+                        // Usa i film rimanenti dalla cache
+                        val remainingMovies = cachedSuggestions.subList(
+                            currentBatchIndex,
+                            cachedSuggestions.size
+                        ).toList()
+
+                        if (remainingMovies.isNotEmpty()) {
+                            _suggestions.value = remainingMovies.take(pageSize)
+                            currentBatchIndex = cachedSuggestions.size
+                            return@launch
+                        }
                     }
                 }
 
                 // Carica nuovi suggerimenti
-                loadNewSuggestions(roomCode, username, pageSize * 3) // Carica più film per la cache
+                loadNewSuggestions(roomCode, username)
 
             } catch (e: Exception) {
                 _recError.value = "Errore caricamento batch: ${e.localizedMessage}"
+            } finally {
+                isLoadingNewBatch = false
             }
         }
     }
 
+
     private suspend fun loadNewSuggestions(
         roomCode: String,
-        username: String,
-        totalSize: Int
+        username: String
     ) {
         // 1) Ottieni preferenze utente (con cache)
         val userPrefs = cachedUserPrefs ?: run {
@@ -204,15 +219,20 @@ class RecommendationViewModel @Inject constructor(
         }
 
         // 6) Aggiorna cache
-        cachedSuggestions.clear()
-        cachedSuggestions.addAll(finalSuggestions)
-        currentBatchIndex = 0
-        lastLoadTime = System.currentTimeMillis()
+        synchronized(cachedSuggestions) {
+            cachedSuggestions.clear()
+            cachedSuggestions.addAll(finalSuggestions)
+            currentBatchIndex = 0
+            lastLoadTime = System.currentTimeMillis()
+        }
 
         // 7) Restituisci il primo batch
         val firstBatch = finalSuggestions.take(20)
         _suggestions.value = firstBatch
-        currentBatchIndex = 20
+
+        synchronized(cachedSuggestions) {
+            currentBatchIndex = 20
+        }
 
         _recError.value = null
     }
@@ -245,7 +265,7 @@ class RecommendationViewModel @Inject constructor(
                 sortBy = "vote_count.desc" // Ordina per numero voti invece che popolarità
             ).filter { it.imdbID !in seenIds }
 
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return emptyList()
         }
     }
@@ -264,7 +284,7 @@ class RecommendationViewModel @Inject constructor(
                 sortBy = "popularity.desc",
                 page = Random.nextInt(1, 6) // Randomizza la pagina
             ).filter { it.imdbID !in seenIds }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -280,7 +300,7 @@ class RecommendationViewModel @Inject constructor(
                 sortBy = listOf("popularity.desc", "vote_average.desc", "release_date.desc").random(),
                 page = Random.nextInt(1, 4)
             ).filter { it.imdbID !in seenIds }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -306,7 +326,7 @@ class RecommendationViewModel @Inject constructor(
                 sortBy = "vote_count.desc",
                 page = Random.nextInt(1, 3)
             ).filter { it.imdbID !in seenIds }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
