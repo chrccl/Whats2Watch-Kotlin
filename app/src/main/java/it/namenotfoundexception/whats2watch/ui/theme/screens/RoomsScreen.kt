@@ -124,7 +124,7 @@ fun RoomsScreen(
         BottomNavigationHomepage(
             modifier = Modifier.align(Alignment.BottomCenter),
             activeTab = NavigationTab.ROOMS,
-            onRoomsClick = onHomeClick,
+            onHomeClick = onHomeClick,
             onReviewsClick = onReviewsClick
         )
     }
