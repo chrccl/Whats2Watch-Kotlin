@@ -1,5 +1,6 @@
 package it.namenotfoundexception.whats2watch.ui.theme.screens
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,6 +45,27 @@ fun SwipeScreen(
     onLogoutClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
+    val context = LocalContext.current
+
+    // Force portrait orientation when this screen is active
+    DisposableEffect(Unit) {
+        val activity = context as? androidx.activity.ComponentActivity
+        val originalOrientation = activity?.requestedOrientation
+
+        // Set portrait orientation
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+        onDispose {
+            // Restore original orientation when leaving the screen
+            originalOrientation?.let {
+                activity.requestedOrientation = it
+            } ?: run {
+                // If no original orientation was set, allow all orientations
+                activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            }
+        }
+    }
+
     var batchCount by remember { mutableIntStateOf(0) }
     var showMovieDetails by remember { mutableStateOf(false) }
     var showMatchesModal by remember { mutableStateOf(false) }
