@@ -20,8 +20,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import it.namenotfoundexception.whats2watch.R
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.AppColors
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.AppTitle
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.BackButton
@@ -64,7 +66,7 @@ fun SwipeScreen(
                 title = {
                     AppTitle()
                 },
-                subtitle = "Room: $roomCode",
+                subtitle = stringResource(R.string.room, roomCode),
                 onLogoutClick = onLogoutClick,
                 modifier = Modifier.padding(16.dp)
             )
@@ -113,7 +115,7 @@ fun SwipeScreen(
         ) {
             Icon(
                 imageVector = Icons.Default.Star,
-                contentDescription = "View Matches",
+                contentDescription = stringResource(R.string.view_matches),
                 tint = AppColors.OnPrimary
             )
         }

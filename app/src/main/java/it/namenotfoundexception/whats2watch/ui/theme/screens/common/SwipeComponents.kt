@@ -41,11 +41,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import it.namenotfoundexception.whats2watch.R
 import it.namenotfoundexception.whats2watch.model.entities.Movie
 import kotlin.math.abs
 
@@ -67,7 +69,7 @@ fun BackButton(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = stringResource(R.string.back),
                 tint = AppColors.OnPrimary
             )
         }
@@ -94,7 +96,10 @@ fun SwipeableMovieCard(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = AppDimensions.ExtraLargeSpacing.dp, vertical = AppDimensions.Spacing.dp),
+            .padding(
+                horizontal = AppDimensions.ExtraLargeSpacing.dp,
+                vertical = AppDimensions.Spacing.dp
+            ),
         contentAlignment = Alignment.Center
     ) {
         if (suggestions.isNotEmpty()) {
@@ -124,11 +129,13 @@ fun SwipeableMovieCard(
                                         onBatchCountChange(batchCount + 1)
                                         offsetX = 0f
                                     }
+
                                     offsetX < -swipeThreshold -> {
                                         onMovieSwipe(suggestions[batchCount], false)
                                         onBatchCountChange(batchCount + 1)
                                         offsetX = 0f
                                     }
+
                                     else -> {
                                         offsetX = 0f
                                     }
@@ -177,7 +184,12 @@ private fun MovieCardContent(movie: Movie) {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .clip(RoundedCornerShape(topStart = AppDimensions.LargeSpacing.dp, topEnd = AppDimensions.LargeSpacing.dp)),
+                .clip(
+                    RoundedCornerShape(
+                        topStart = AppDimensions.LargeSpacing.dp,
+                        topEnd = AppDimensions.LargeSpacing.dp
+                    )
+                ),
             contentScale = ContentScale.Crop
         )
 
@@ -205,7 +217,7 @@ private fun MovieCardContent(movie: Movie) {
 
                 movie.imdbRating?.let { rating ->
                     Text(
-                        text = "★ $rating",
+                        text = stringResource(R.string.stars_icon, rating),
                         fontSize = AppTextSizes.Small.sp,
                         color = Color(0xFFFFD700)
                     )
@@ -215,7 +227,7 @@ private fun MovieCardContent(movie: Movie) {
             Spacer(modifier = Modifier.height(AppDimensions.SmallSpacing.dp))
 
             Text(
-                text = "Tap for details",
+                text = stringResource(R.string.tap_for_details),
                 fontSize = 12.sp,
                 color = AppColors.Secondary,
                 textAlign = TextAlign.Center,
@@ -240,7 +252,7 @@ private fun SwipeActionButtons(
         IconButton(onClick = onDislike) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = "Dislike",
+                contentDescription = stringResource(R.string.dislike),
                 tint = AppColors.Primary,
                 modifier = Modifier.size(32.dp)
             )
@@ -249,7 +261,7 @@ private fun SwipeActionButtons(
         IconButton(onClick = onLike) {
             Icon(
                 imageVector = Icons.Default.Favorite,
-                contentDescription = "Like",
+                contentDescription = stringResource(R.string.like),
                 tint = AppColors.Primary,
                 modifier = Modifier.size(32.dp)
             )
@@ -270,7 +282,7 @@ private fun LoadingIndicator() {
         )
         Spacer(modifier = Modifier.height(AppDimensions.Spacing.dp))
         Text(
-            text = "Loading recommendations...",
+            text = stringResource(R.string.loading_recommendations),
             color = AppColors.OnBackground,
             fontSize = AppDimensions.Spacing.sp
         )

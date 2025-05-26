@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,6 +48,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
 import it.namenotfoundexception.whats2watch.model.entities.Movie
+import it.namenotfoundexception.whats2watch.R
 
 @Composable
 fun MovieDetailsModal(
@@ -95,7 +97,12 @@ private fun MovieDetailHeader(
             contentDescription = movie.title,
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(topStart = AppDimensions.CardRadius.dp, topEnd = AppDimensions.CardRadius.dp)),
+                .clip(
+                    RoundedCornerShape(
+                        topStart = AppDimensions.CardRadius.dp,
+                        topEnd = AppDimensions.CardRadius.dp
+                    )
+                ),
             contentScale = ContentScale.Crop
         )
 
@@ -107,7 +114,7 @@ private fun MovieDetailHeader(
         ) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = "Close",
+                contentDescription = stringResource(R.string.close),
                 tint = Color.White,
                 modifier = Modifier
                     .size(32.dp)
@@ -139,7 +146,7 @@ private fun MovieDetailContent(movie: Movie) {
 
             movie.imdbRating?.let { rating ->
                 Text(
-                    text = "★ $rating",
+                    text = stringResource(R.string.stars_icon),
                     fontSize = AppDimensions.Spacing.sp,
                     color = Color(0xFFFFD700)
                 )
@@ -149,22 +156,22 @@ private fun MovieDetailContent(movie: Movie) {
         Spacer(modifier = Modifier.height(AppDimensions.Spacing.dp))
 
         movie.genre?.let { genre ->
-            DetailSection("Genre", genre)
+            DetailSection(stringResource(R.string.genre), genre)
             Spacer(modifier = Modifier.height(12.dp))
         }
 
         movie.director?.let { director ->
-            DetailSection("Director", director)
+            DetailSection(stringResource(R.string.director), director)
             Spacer(modifier = Modifier.height(12.dp))
         }
 
         movie.actors?.let { actors ->
-            DetailSection("Cast", actors)
+            DetailSection(stringResource(R.string.cast), actors)
             Spacer(modifier = Modifier.height(12.dp))
         }
 
         movie.plot?.let { plot ->
-            DetailSection("Plot", plot)
+            DetailSection(stringResource(R.string.plot), plot)
             Spacer(modifier = Modifier.height(12.dp))
         }
     }
@@ -196,7 +203,7 @@ fun RoomMatchesModal(
     onDismiss: () -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
-    val tabs = listOf("Room Matches", "My Likes")
+    val tabs = listOf(stringResource(R.string.room_matches), stringResource(R.string.my_likes))
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -221,11 +228,11 @@ fun RoomMatchesModal(
                 when (selectedTab) {
                     0 -> MoviesList(
                         movies = roomMatches,
-                        emptyMessage = "No room matches yet!\nWhen everyone likes the same movie, it will appear here."
+                        emptyMessage = stringResource(R.string.no_room_matches_yet_when_everyone_likes_the_same_movie_it_will_appear_here)
                     )
                     1 -> MoviesList(
                         movies = userLikedMovies,
-                        emptyMessage = "You haven't liked any movies yet.\nStart swiping to build your list!"
+                        emptyMessage = stringResource(R.string.you_haven_t_liked_any_movies_yet_start_swiping_to_build_your_list)
                     )
                 }
             }
@@ -243,7 +250,7 @@ private fun MatchesModalHeader(onDismiss: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Movies",
+            text = stringResource(R.string.movies),
             fontSize = AppTextSizes.Title.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black
@@ -252,7 +259,7 @@ private fun MatchesModalHeader(onDismiss: () -> Unit) {
         IconButton(onClick = onDismiss) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = "Close",
+                contentDescription = stringResource(R.string.close),
                 tint = AppColors.Secondary
             )
         }
@@ -361,7 +368,7 @@ fun MovieListItem(movie: Movie) {
                 movie.imdbRating?.let { rating ->
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "★ $rating",
+                        text = stringResource(R.string.stars_icon),
                         fontSize = AppTextSizes.Small.sp,
                         color = Color(0xFFFFD700)
                     )

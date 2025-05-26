@@ -37,4 +37,21 @@
     <string name="review_movie">Recensione Film</string>
     <string name="your_comment">Il tuo commento</string>
     <string name="reviews_for">Recensione per %1$s</string>
+    <string name="back">Indietro</string>
+    <string name="stars_icon">★ %1$s</string>
+    <string name="room">Stanza: %1$s</string>
+    <string name="view_matches">Vedi Matches</string>
+    <string name="tap_for_details">Clicca per dettagli</string>
+    <string name="dislike">Non Mi Piace</string>
+    <string name="like">Mi Piace</string>
+    <string name="loading_recommendations">Carico i suggerimenti</string>
+    <string name="genre">Generi</string>
+    <string name="director">Regista</string>
+    <string name="cast">Attori</string>
+    <string name="plot">Trama</string>
+    <string name="room_matches">Match della Stanza</string>
+    <string name="my_likes">I tuoi likes</string>
+    <string name="you_haven_t_liked_any_movies_yet_start_swiping_to_build_your_list">Non hai ancora messo Mi piace a nessun film. Inizia a scorrere per creare la tua lista</string>
+    <string name="movies">Film</string>
+    <string name="no_room_matches_yet_when_everyone_likes_the_same_movie_it_will_appear_here">Nessun match nella stanza al momento. Quando a tutti piacerà lo stesso film, verrà mostrato qui</string>
 </resources>

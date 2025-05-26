@@ -37,4 +37,21 @@
     <string name="star">Star %1$s</string>
     <string name="your_comment">Your comment</string>
     <string name="reviews_for">Reviews for %1$s</string>
+    <string name="room">Room: %1$s</string>
+    <string name="view_matches">View Matches</string>
+    <string name="back">Back</string>
+    <string name="stars_icon">★ %1$s</string>
+    <string name="tap_for_details">Tap for details</string>
+    <string name="dislike">Dislike</string>
+    <string name="like">Like</string>
+    <string name="loading_recommendations">Loading recommendations...</string>
+    <string name="genre">Genre</string>
+    <string name="director">Director</string>
+    <string name="cast">Cast</string>
+    <string name="plot">Plot</string>
+    <string name="room_matches">Room Matches</string>
+    <string name="my_likes">My Likes</string>
+    <string name="no_room_matches_yet_when_everyone_likes_the_same_movie_it_will_appear_here">No room matches yet!\nWhen everyone likes the same movie, it will appear here.</string>
+    <string name="you_haven_t_liked_any_movies_yet_start_swiping_to_build_your_list">You haven\'t liked any movies yet.\nStart swiping to build your list!</string>
+    <string name="movies">Movies</string>
 </resources>
