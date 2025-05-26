@@ -54,4 +54,18 @@
     <string name="no_room_matches_yet_when_everyone_likes_the_same_movie_it_will_appear_here">No room matches yet!\nWhen everyone likes the same movie, it will appear here.</string>
     <string name="you_haven_t_liked_any_movies_yet_start_swiping_to_build_your_list">You haven\'t liked any movies yet.\nStart swiping to build your list!</string>
     <string name="movies">Movies</string>
+    <string name="registration_failed">Registration failed: %1$s</string>
+    <string name="credentials_are_not_valid">Credentials are not valid</string>
+    <string name="login_failed">Login failed: %1$s</string>
+    <string name="failed_to_retrieve_user_s_likes">Failed to retrieve user\'s likes: %1$s</string>
+    <string name="failed_to_save_preference">Failed to save preference: %1$s</string>
+    <string name="error_during_batch_fetching">Error during batch fetching: %1$s</string>
+    <string name="error_saving_review">Error saving review: %1$s</string>
+    <string name="reviews_loading_failed">Reviews loading failed: %1$s</string>
+    <string name="searching_movie_error">Searching movie error: %1$s</string>
+    <string name="error_creating_a_room">Error creating a room: %1$s</string>
+    <string name="error_during_the_join">Error during the join: %1$s</string>
+    <string name="error_leaving_the_room">Error leaving the room: %1$s</string>
+    <string name="error_during_loading_room">Error during loading room: %1$s</string>
+    <string name="cannot_fetch_user_s_room">Cannot fetch user\'s room: %1$s</string>
 </resources>

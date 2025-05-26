@@ -3,6 +3,8 @@ package it.namenotfoundexception.whats2watch.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import it.namenotfoundexception.whats2watch.R
+import it.namenotfoundexception.whats2watch.model.ResourceProvider
 import it.namenotfoundexception.whats2watch.model.entities.User
 import it.namenotfoundexception.whats2watch.repositories.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val userRepo: UserRepository
+    private val userRepo: UserRepository,
+    private val res: ResourceProvider
 ) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<User?>(null)
@@ -29,7 +32,7 @@ class AuthViewModel @Inject constructor(
                 _currentUser.value = user
                 _authError.value = null
             } catch (e: Exception) {
-                _authError.value = "Registrazione fallita: ${e.message}"
+                _authError.value = res.getString(R.string.registration_failed, e.message)
             }
         }
     }
@@ -42,10 +45,10 @@ class AuthViewModel @Inject constructor(
                     _currentUser.value = user
                     _authError.value = null
                 } else {
-                    _authError.value = "Credenziali non valide"
+                    _authError.value = res.getString(R.string.credentials_are_not_valid)
                 }
             } catch (e: Exception) {
-                _authError.value = "Login fallito: ${e.message}"
+                _authError.value = res.getString(R.string.login_failed, e.message)
             }
         }
     }

@@ -3,6 +3,8 @@ package it.namenotfoundexception.whats2watch.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import it.namenotfoundexception.whats2watch.R
+import it.namenotfoundexception.whats2watch.model.ResourceProvider
 import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Review
 import it.namenotfoundexception.whats2watch.repositories.MovieRepository
@@ -15,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
     private val reviewRepo: ReviewRepository,
-    private val movieRepo: MovieRepository
+    private val movieRepo: MovieRepository,
+    private val res: ResourceProvider
 ) : ViewModel() {
 
     private val _reviewsForMovie = MutableStateFlow<List<Review>>(emptyList())
@@ -37,7 +40,7 @@ class ReviewViewModel @Inject constructor(
                 reviewRepo.saveReview(review)
                 _reviewError.value = null
             } catch (e: Exception) {
-                _reviewError.value = "Errore salvataggio recensione: ${e.message}"
+                _reviewError.value = res.getString(R.string.error_saving_review, e.message)
             }
         }
     }
@@ -48,7 +51,7 @@ class ReviewViewModel @Inject constructor(
                 _reviewsForMovie.value = reviewRepo.getMovieReviews(movieId)
                 _reviewError.value = null
             } catch (e: Exception) {
-                _reviewError.value = "Errore caricamento recensioni: ${e.message}"
+                _reviewError.value = res.getString(R.string.reviews_loading_failed, e.message)
             }
         }
     }
@@ -68,7 +71,7 @@ class ReviewViewModel @Inject constructor(
                 _searchResults.value = results
 
             } catch (e: Exception) {
-                _reviewError.value = "Errore nella ricerca: ${e.message}"
+                _reviewError.value = res.getString(R.string.searching_movie_error, e.message)
                 _searchResults.value = emptyList()
             } finally {
                 _isLoading.value = false

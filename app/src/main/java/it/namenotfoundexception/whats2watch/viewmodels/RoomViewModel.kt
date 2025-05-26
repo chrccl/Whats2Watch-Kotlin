@@ -3,6 +3,8 @@ package it.namenotfoundexception.whats2watch.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import it.namenotfoundexception.whats2watch.R
+import it.namenotfoundexception.whats2watch.model.ResourceProvider
 import it.namenotfoundexception.whats2watch.model.entities.Room
 import it.namenotfoundexception.whats2watch.model.entities.RoomParticipant
 import it.namenotfoundexception.whats2watch.model.entities.RoomWithUsers
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RoomViewModel @Inject constructor(
-    private val roomRepo: RoomRepository
+    private val roomRepo: RoomRepository,
+    private val res: ResourceProvider
 ) : ViewModel() {
 
     private val _roomData = MutableStateFlow<RoomWithUsers?>(null)
@@ -38,7 +41,7 @@ class RoomViewModel @Inject constructor(
                 )
                 _roomError.value = null
             } catch (e: Exception) {
-                _roomError.value = "Errore creazione stanza: ${e.message}"
+                _roomError.value = res.getString(R.string.error_creating_a_room, e.message)
             }
         }
     }
@@ -50,7 +53,7 @@ class RoomViewModel @Inject constructor(
                 _roomError.value = null
                 loadRoom(code)
             } catch (e: Exception) {
-                _roomError.value = "Errore join: ${e.message}"
+                _roomError.value = res.getString(R.string.error_during_the_join, e.message)
             }
         }
     }
@@ -62,7 +65,7 @@ class RoomViewModel @Inject constructor(
                 _roomError.value = null
                 loadRoom(code)
             } catch (e: Exception) {
-                _roomError.value = "Errore leave: ${e.message}"
+                _roomError.value = res.getString(R.string.error_leaving_the_room, e.message)
             }
         }
     }
@@ -73,7 +76,7 @@ class RoomViewModel @Inject constructor(
                 _roomData.value = roomRepo.getRoomWithUsers(code)
                 _roomError.value = null
             } catch (e: Exception) {
-                _roomError.value = "Impossibile caricare stanza: ${e.message}"
+                _roomError.value = res.getString(R.string.error_during_loading_room, e.message)
             }
         }
     }
@@ -84,7 +87,7 @@ class RoomViewModel @Inject constructor(
                 _roomByUsers.value = roomRepo.getRoomsByUser(username)
                 _roomError.value = null
             } catch (e: Exception) {
-                _roomError.value = "Impossibile caricare stanze per utente: ${e.message}"
+                _roomError.value = res.getString(R.string.cannot_fetch_user_s_room, e.message)
             }
         }
     }

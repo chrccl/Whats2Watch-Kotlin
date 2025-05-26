@@ -3,6 +3,8 @@ package it.namenotfoundexception.whats2watch.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import it.namenotfoundexception.whats2watch.R
+import it.namenotfoundexception.whats2watch.model.ResourceProvider
 import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Preference
 import it.namenotfoundexception.whats2watch.repositories.GenreRepository
@@ -23,7 +25,8 @@ import kotlin.random.Random
 class RecommendationViewModel @Inject constructor(
     private val movieRepo: MovieRepository,
     private val genreRepo: GenreRepository,
-    private val prefRepo: PreferenceRepository
+    private val prefRepo: PreferenceRepository,
+    private val res: ResourceProvider
 ) : ViewModel() {
 
     private val _suggestions = MutableStateFlow<List<Movie>>(mutableListOf<Movie>())
@@ -59,7 +62,8 @@ class RecommendationViewModel @Inject constructor(
                 _userLikedMovies.value = likedMovies
                 _recError.value = null
             } catch (e: Exception) {
-                _recError.value = "Impossibile reperire i like dell'utente: ${e.message}"
+                _recError.value =
+                    res.getString(R.string.failed_to_retrieve_user_s_likes, e.message)
             }
         }
     }
@@ -89,7 +93,7 @@ class RecommendationViewModel @Inject constructor(
 
                 _recError.value = null
             } catch (e: Exception) {
-                _recError.value = "Errore salvataggio preferenza: ${e.message}"
+                _recError.value = res.getString(R.string.failed_to_save_preference, e.message)
             }
         }
     }
@@ -141,7 +145,8 @@ class RecommendationViewModel @Inject constructor(
                 loadNewSuggestions(roomCode, username)
 
             } catch (e: Exception) {
-                _recError.value = "Errore caricamento batch: ${e.localizedMessage}"
+                _recError.value =
+                    res.getString(R.string.error_during_batch_fetching, e.localizedMessage)
             } finally {
                 isLoadingNewBatch = false
             }
@@ -345,10 +350,7 @@ class RecommendationViewModel @Inject constructor(
             }
         }
     }
-
-    /**
-     * Scoring ottimizzato e più bilanciato
-     */
+    
     private fun calculateScore(liked: List<Movie>, candidate: Movie): Double {
         if (liked.isEmpty()) return Random.nextDouble(0.5, 1.0)
 
@@ -391,7 +393,6 @@ class RecommendationViewModel @Inject constructor(
         return (normalizedScore + ratingBonus) * randomFactor
     }
 
-    /** Calcola i N elementi più frequenti nella lista */
     private fun top2(list: List<String>): List<String> =
         list.filter { it.isNotBlank() }
             .groupingBy { it.trim() }

@@ -54,4 +54,18 @@
     <string name="you_haven_t_liked_any_movies_yet_start_swiping_to_build_your_list">Non hai ancora messo Mi piace a nessun film. Inizia a scorrere per creare la tua lista</string>
     <string name="movies">Film</string>
     <string name="no_room_matches_yet_when_everyone_likes_the_same_movie_it_will_appear_here">Nessun match nella stanza al momento. Quando a tutti piacerà lo stesso film, verrà mostrato qui</string>
+    <string name="registration_failed">La registrazione è fallita: %1$s</string>
+    <string name="credentials_are_not_valid">Credenziali non valide</string>
+    <string name="login_failed">Login fallito: %1$s</string>
+    <string name="failed_to_retrieve_user_s_likes">Impossibile reperire i like dell\'utente: %1$s</string>
+    <string name="failed_to_save_preference">Impossibile reperire le preferenze dell\'utente: %1$s</string>
+    <string name="error_during_batch_fetching">Impossibile caricare prossimi suggerimenti: %1$s</string>
+    <string name="error_saving_review">Impossibile salvare la recensione: %1$s</string>
+    <string name="reviews_loading_failed">Caricamento recensioni è fallito: %1$s</string>
+    <string name="searching_movie_error">Errore durante la ricerca del film: %1$s</string>
+    <string name="error_creating_a_room">Errore durante la creazione della stanza: %1$s</string>
+    <string name="error_during_the_join">Errore durante la join: %1$s</string>
+    <string name="error_leaving_the_room">Errore durante l\'abbandono della stanza: %1$s</string>
+    <string name="error_during_loading_room">Errore durante il caricamento della stanza: Errore durante l\'abbandono della stanza: %1$s</string>
+    <string name="cannot_fetch_user_s_room">Impossibile caricare le stanze dell\'utente: Errore durante l\'abbandono della stanza: %1$s</string>
 </resources>
