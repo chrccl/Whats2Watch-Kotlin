@@ -19,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import it.namenotfoundexception.whats2watch.model.entities.User
@@ -26,9 +28,10 @@ import it.namenotfoundexception.whats2watch.ui.theme.screens.common.AppTitle
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.BottomNavigationHomepage
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.NavigationTab
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.TopBar
-import it.namenotfoundexception.whats2watch.ui.theme.screens.common.joinRoomCard
+import it.namenotfoundexception.whats2watch.ui.theme.screens.common.JoinRoomCard
 import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 import it.namenotfoundexception.whats2watch.viewmodels.RoomViewModel
+import it.namenotfoundexception.whats2watch.R
 
 @Composable
 fun RoomsScreen(
@@ -48,6 +51,8 @@ fun RoomsScreen(
     val currentUser by authViewModel.currentUser.collectAsState()
     val roomData by roomViewModel.roomData.collectAsState()
     val roomError by roomViewModel.roomError.collectAsState()
+
+    val context = LocalContext.current
 
     // Observe successful join
     LaunchedEffect(roomData) {
@@ -80,7 +85,7 @@ fun RoomsScreen(
             // Top Bar
             TopBar(
                 title = { AppTitle() },
-                subtitle = currentUser?.let { "Welcome, ${it.username}" },
+                subtitle = currentUser?.let { stringResource(R.string.welcome_user, it.username) },
                 onLogoutClick = onLogoutClick,
                 modifier = Modifier.padding(16.dp)
             )
@@ -93,7 +98,7 @@ fun RoomsScreen(
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                joinRoomCard(
+                JoinRoomCard(
                     roomCode = roomCode,
                     onRoomCodeChange = {
                         roomCode = it
@@ -108,9 +113,9 @@ fun RoomsScreen(
                             joinError = null
                             roomViewModel.joinRoom(roomCode.trim(), user.username)
                         } else if (currentUser == null) {
-                            joinError = "User not logged in"
+                            joinError = context.getString(R.string.user_not_logged_in)
                         } else {
-                            joinError = "Please enter a room code"
+                            joinError = context.getString(R.string.please_enter_a_room_code)
                         }
                     },
                     modifier = Modifier

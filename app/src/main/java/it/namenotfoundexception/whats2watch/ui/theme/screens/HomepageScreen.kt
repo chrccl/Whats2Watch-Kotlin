@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,6 +32,7 @@ import it.namenotfoundexception.whats2watch.ui.theme.screens.common.RecentRoomsS
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.SecondaryButton
 import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 import it.namenotfoundexception.whats2watch.viewmodels.RoomViewModel
+import it.namenotfoundexception.whats2watch.R
 
 @Composable
 fun HomepageScreen(
@@ -116,20 +118,20 @@ private fun HomepageTopBar(
     ) {
         Column {
             Text(
-                text = "Whats2Watch",
+                text = stringResource(R.string.app_name),
                 color = Color.White,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Welcome, $username",
+                text = stringResource(R.string.welcome_user, username),
                 color = Color.Gray,
                 fontSize = 14.sp
             )
         }
 
         SecondaryButton(
-            text = "Logout",
+            text = stringResource(R.string.logout),
             onClick = onLogoutClick
         )
     }
@@ -148,7 +150,7 @@ private fun CreateRoomFAB(
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Create Room"
+            contentDescription = stringResource(R.string.create_room)
         )
     }
 }

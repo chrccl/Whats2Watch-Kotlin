@@ -39,7 +39,7 @@ fun AppTitle(
     fontSize: Int = AppTextSizes.Title
 ) {
     Text(
-        text = "Whats2Watch",
+        text = stringResource(R.string.app_name),
         color = AppColors.OnBackground,
         fontSize = fontSize.sp,
         fontWeight = FontWeight.Bold,

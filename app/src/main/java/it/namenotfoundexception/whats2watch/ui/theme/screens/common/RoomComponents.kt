@@ -30,11 +30,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import it.namenotfoundexception.whats2watch.R
 import it.namenotfoundexception.whats2watch.model.entities.Room
 import it.namenotfoundexception.whats2watch.viewmodels.RoomViewModel
 
@@ -50,7 +52,7 @@ fun RecentRoomsSection(
             .padding(horizontal = AppDimensions.Spacing.dp)
     ) {
         SectionTitle(
-            text = "Recent Rooms",
+            text = stringResource(R.string.recent_rooms),
             modifier = Modifier.padding(vertical = AppDimensions.Spacing.dp)
         )
 
@@ -154,7 +156,7 @@ private fun RoomCardContent(
             )
 
             Text(
-                text = "$memberCount Members",
+                text = stringResource(R.string.members, memberCount),
                 fontSize = AppTextSizes.Small.sp,
                 color = AppColors.Secondary
             )
@@ -165,15 +167,16 @@ private fun RoomCardContent(
 @Composable
 private fun EmptyRoomsMessage() {
     Text(
-        text = "No rooms found",
+        text = stringResource(R.string.no_rooms_found),
         fontSize = AppTextSizes.Small.sp,
         fontWeight = FontWeight.SemiBold,
         color = AppColors.OnBackground,
         modifier = Modifier.padding(vertical = AppDimensions.Spacing.dp)
     )
 }
+
 @Composable
-fun joinRoomCard(
+fun JoinRoomCard(
     roomCode: String,
     onRoomCodeChange: (String) -> Unit,
     isJoining: Boolean,
@@ -196,7 +199,7 @@ fun joinRoomCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Join a Room",
+                text = stringResource(R.string.join_a_room),
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
@@ -211,7 +214,7 @@ fun joinRoomCard(
                 )
             }
 
-            roomCodeTextField(
+            RoomCodeTextField(
                 value = roomCode,
                 onValueChange = onRoomCodeChange,
                 enabled = !isJoining,
@@ -220,7 +223,7 @@ fun joinRoomCard(
                     .padding(bottom = 24.dp)
             )
 
-            joinButton(
+            JoinButton(
                 onClick = onJoinClick,
                 enabled = !isJoining && roomCode.isNotEmpty(),
                 isLoading = isJoining,
@@ -233,7 +236,7 @@ fun joinRoomCard(
 }
 
 @Composable
-private fun roomCodeTextField(
+private fun RoomCodeTextField(
     value: String,
     onValueChange: (String) -> Unit,
     enabled: Boolean,
@@ -242,7 +245,7 @@ private fun roomCodeTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text("Room Code", color = Color.White) },
+        label = { Text(stringResource(R.string.room_code), color = Color.White) },
         singleLine = true,
         enabled = enabled,
         colors = TextFieldDefaults.colors(
@@ -259,7 +262,7 @@ private fun roomCodeTextField(
 }
 
 @Composable
-private fun joinButton(
+private fun JoinButton(
     onClick: () -> Unit,
     enabled: Boolean,
     isLoading: Boolean,
@@ -281,7 +284,7 @@ private fun joinButton(
             )
         } else {
             Text(
-                text = "Join",
+                text = stringResource(R.string.join),
                 fontSize = 16.sp
             )
         }

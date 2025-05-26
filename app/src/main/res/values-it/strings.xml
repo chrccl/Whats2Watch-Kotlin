@@ -12,4 +12,17 @@
     <string name="password_is_required">Password non trovata</string>
     <string name="passwords_do_not_match">Le password non coincidono</string>
     <string name="password_must_be_at_least_4_characters">La password deve essere minimo 4 caratteri</string>
+    <string name="welcome_user">Benvenuto, %1$s</string>
+    <string name="create_room">Crea Stanza</string>
+    <string name="recent_rooms">Stanze Recenti</string>
+    <string name="members">%1$s Membro/i</string>
+    <string name="no_rooms_found">Nessuna Stanza da mostrare</string>
+    <string name="home">Homepage</string>
+    <string name="rooms">Stanze</string>
+    <string name="reviews">Recensioni</string>
+    <string name="user_not_logged_in">Utente non loggato</string>
+    <string name="please_enter_a_room_code">Inserisci il codice della stanza</string>
+    <string name="join_a_room">Entra in una stanza</string>
+    <string name="room_code">Codice</string>
+    <string name="join">Entra</string>
 </resources>

@@ -20,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import it.namenotfoundexception.whats2watch.R
 
 enum class NavigationTab {
     HOME, ROOMS, REVIEWS
@@ -44,21 +46,21 @@ fun BottomNavigationHomepage(
     ) {
         NavigationItem(
             icon = Icons.Default.Home,
-            contentDescription = "Home",
+            contentDescription = stringResource(R.string.home),
             isActive = activeTab == NavigationTab.HOME,
             onClick = onHomeClick
         )
 
         NavigationItem(
             icon = Icons.Default.Search,
-            contentDescription = "Rooms",
+            contentDescription = stringResource(R.string.rooms),
             isActive = activeTab == NavigationTab.ROOMS,
             onClick = onRoomsClick
         )
 
         NavigationItem(
             icon = Icons.Default.Star,
-            contentDescription = "Reviews",
+            contentDescription = stringResource(R.string.reviews),
             isActive = activeTab == NavigationTab.REVIEWS,
             onClick = onReviewsClick
         )

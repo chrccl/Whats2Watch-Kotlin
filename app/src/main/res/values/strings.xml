@@ -12,4 +12,17 @@
     <string name="password_is_required">Password is required</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="password_must_be_at_least_4_characters">Password must be at least 4 characters</string>
+    <string name="welcome_user">Welcome, %1$s</string>
+    <string name="create_room">Create Room</string>
+    <string name="recent_rooms">Recent Rooms</string>
+    <string name="members">%1$s Members</string>
+    <string name="no_rooms_found">No rooms found</string>
+    <string name="home">Home</string>
+    <string name="rooms">Rooms</string>
+    <string name="reviews">Reviews</string>
+    <string name="user_not_logged_in">User not logged in</string>
+    <string name="please_enter_a_room_code">Please enter a room code</string>
+    <string name="join_a_room">Join a Room</string>
+    <string name="room_code">Room Code</string>
+    <string name="join">Join</string>
 </resources>
