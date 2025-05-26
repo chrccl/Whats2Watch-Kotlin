@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">Whats2Watch</string>
+    <string name="app_name" translatable="false">Whats2Watch</string>
+    <string name="welcome">Welcome</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="create_your_profile">Create your profile</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register_now">Register Now</string>
+    <string name="username_is_required">Username is required</string>
+    <string name="password_is_required">Password is required</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="password_must_be_at_least_4_characters">Password must be at least 4 characters</string>
 </resources>

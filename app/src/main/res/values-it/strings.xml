@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome">Benvenuto/a</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="create_your_profile">Crea il tuo profilo</string>
+    <string name="confirm_password">Conferma la password</string>
+    <string name="register_now">Registrati</string>
+    <string name="username_is_required">Username non trovato</string>
+    <string name="password_is_required">Password non trovata</string>
+    <string name="passwords_do_not_match">Le password non coincidono</string>
+    <string name="password_must_be_at_least_4_characters">La password deve essere minimo 4 caratteri</string>
+</resources>

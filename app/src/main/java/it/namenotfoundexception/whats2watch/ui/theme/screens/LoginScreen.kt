@@ -17,11 +17,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import it.namenotfoundexception.whats2watch.R
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.AppTitle
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.CustomTextField
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.ErrorText
@@ -113,7 +115,7 @@ private fun LoginForm(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Welcome",
+            text = stringResource(R.string.welcome),
             color = Color.White,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
@@ -125,21 +127,21 @@ private fun LoginForm(
         CustomTextField(
             value = username,
             onValueChange = onUsernameChange,
-            label = "Username",
+            label = stringResource(R.string.username),
             isEnabled = !isLoading
         )
 
         CustomTextField(
             value = password,
             onValueChange = onPasswordChange,
-            label = "Password",
+            label = stringResource(R.string.password),
             isPassword = true,
             isEnabled = !isLoading,
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
         PrimaryButton(
-            text = "Login",
+            text = stringResource(R.string.login),
             onClick = onLoginClick,
             isLoading = isLoading
         )
