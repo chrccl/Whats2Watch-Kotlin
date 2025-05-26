@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
+import it.namenotfoundexception.whats2watch.R
 import it.namenotfoundexception.whats2watch.model.entities.Movie
 import it.namenotfoundexception.whats2watch.model.entities.Review
 import it.namenotfoundexception.whats2watch.viewmodels.ReviewViewModel
@@ -76,11 +78,11 @@ fun ReviewSearchBar(
     OutlinedTextField(
         value = searchQuery,
         onValueChange = onSearchQueryChange,
-        label = { Text("Search movies...", color = AppColors.Secondary) },
+        label = { Text(stringResource(R.string.search_movies), color = AppColors.Secondary) },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.search),
                 tint = AppColors.Secondary
             )
         },
@@ -127,7 +129,7 @@ fun ReviewContent(
 
             searchResults.isEmpty() && searchQuery.isEmpty() -> {
                 Text(
-                    text = "Search for movies to review",
+                    text = stringResource(R.string.search_for_movies_to_review),
                     color = AppColors.Secondary,
                     fontSize = AppTextSizes.Body.sp,
                     modifier = Modifier.align(Alignment.Center)
@@ -136,7 +138,7 @@ fun ReviewContent(
 
             searchResults.isEmpty() -> {
                 Text(
-                    text = "No movies found",
+                    text = stringResource(R.string.no_movies_found),
                     color = AppColors.Secondary,
                     fontSize = AppTextSizes.Body.sp,
                     modifier = Modifier.align(Alignment.Center)
@@ -186,7 +188,7 @@ fun MovieSearchItem(
             // Movie Poster
             AsyncImage(
                 model = movie.poster,
-                contentDescription = "${movie.title} poster",
+                contentDescription = stringResource(R.string.poster, movie.title),
                 modifier = Modifier
                     .width(80.dp)
                     .fillMaxHeight()
@@ -231,7 +233,7 @@ fun MovieSearchItem(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Star,
-                            contentDescription = "Rating",
+                            contentDescription = stringResource(R.string.rating),
                             tint = Color(0xFFFFD700),
                             modifier = Modifier.size(16.dp)
                         )
@@ -260,7 +262,7 @@ fun MovieSearchItem(
                             .height(32.dp)
                     ) {
                         Text(
-                            text = "Comment",
+                            text = stringResource(R.string.comment),
                             fontSize = 12.sp
                         )
                     }
@@ -276,7 +278,7 @@ fun MovieSearchItem(
                             .height(32.dp)
                     ) {
                         Text(
-                            text = "Reviews",
+                            text = stringResource(R.string.reviews),
                             fontSize = 12.sp
                         )
                     }
@@ -311,7 +313,7 @@ fun BottomNavigationReview(
         ) {
             Icon(
                 imageVector = Icons.Default.Home,
-                contentDescription = "Home",
+                contentDescription = stringResource(R.string.home),
                 tint = AppColors.OnPrimary
             )
         }
@@ -327,7 +329,7 @@ fun BottomNavigationReview(
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Rooms",
+                contentDescription = stringResource(R.string.rooms),
                 tint = AppColors.OnPrimary
             )
         }
@@ -342,7 +344,7 @@ fun BottomNavigationReview(
         ) {
             Icon(
                 imageVector = Icons.Default.Star,
-                contentDescription = "Reviews",
+                contentDescription = stringResource(R.string.reviews),
                 tint = AppColors.Primary
             )
         }
@@ -384,7 +386,7 @@ fun ReviewDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Review Movie",
+                        text = stringResource(R.string.review_movie),
                         color = AppColors.OnSurface,
                         fontSize = AppTextSizes.Subtitle.sp,
                         fontWeight = FontWeight.Bold
@@ -393,7 +395,7 @@ fun ReviewDialog(
                     IconButton(onClick = onDismiss) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Close",
+                            contentDescription = stringResource(R.string.close),
                             tint = AppColors.Secondary
                         )
                     }
@@ -419,7 +421,7 @@ fun ReviewDialog(
 
                 // Rating stars
                 Text(
-                    text = "Rating",
+                    text = stringResource(R.string.rating),
                     color = AppColors.OnSurface,
                     fontSize = AppTextSizes.Body.sp,
                     fontWeight = FontWeight.Medium
@@ -433,7 +435,7 @@ fun ReviewDialog(
                     for (i in 1..10) {
                         Icon(
                             imageVector = Icons.Default.Star,
-                            contentDescription = "Star $i",
+                            contentDescription = stringResource(R.string.star, i),
                             tint = if (i <= rating) Color(0xFFFFD700) else AppColors.Secondary,
                             modifier = Modifier
                                 .size(16.dp)
@@ -448,7 +450,7 @@ fun ReviewDialog(
                 OutlinedTextField(
                     value = comment,
                     onValueChange = { comment = it },
-                    label = { Text("Your comment", color = AppColors.Secondary) },
+                    label = { Text(stringResource(R.string.your_comment), color = AppColors.Secondary) },
                     minLines = 3,
                     maxLines = 5,
                     colors = TextFieldDefaults.colors(
@@ -525,7 +527,7 @@ fun ReviewsDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Reviews for ${movie.title}",
+                        text = stringResource(R.string.reviews_for, movie.title),
                         color = AppColors.OnSurface,
                         fontSize = AppTextSizes.Caption.sp,
                         fontWeight = FontWeight.Bold
@@ -533,7 +535,7 @@ fun ReviewsDialog(
                     IconButton(onClick = onDismiss) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Close",
+                            contentDescription = stringResource(R.string.close),
                             tint = AppColors.Secondary
                         )
                     }
@@ -583,7 +585,7 @@ fun ReviewItem(review: Review) {
                     ) {
                         Icon(
                             imageVector = Icons.Default.Star,
-                            contentDescription = "Rating",
+                            contentDescription = stringResource(R.string.rating),
                             tint = Color(0xFFFFD700),
                             modifier = Modifier.size(16.dp)
                         )

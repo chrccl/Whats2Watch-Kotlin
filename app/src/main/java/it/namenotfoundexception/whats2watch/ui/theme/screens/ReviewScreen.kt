@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import it.namenotfoundexception.whats2watch.model.entities.Movie
@@ -27,6 +28,7 @@ import it.namenotfoundexception.whats2watch.ui.theme.screens.common.ReviewsDialo
 import it.namenotfoundexception.whats2watch.ui.theme.screens.common.TopBar
 import it.namenotfoundexception.whats2watch.viewmodels.AuthViewModel
 import it.namenotfoundexception.whats2watch.viewmodels.ReviewViewModel
+import it.namenotfoundexception.whats2watch.R
 
 @Composable
 fun ReviewScreen(
@@ -58,7 +60,7 @@ fun ReviewScreen(
             // Top Bar
             TopBar(
                 title = { AppTitle(fontSize = 24) },
-                subtitle = currentUser?.let { "Welcome, ${it.username}" },
+                subtitle = currentUser?.let { stringResource(R.string.welcome_user, it.username) },
                 onLogoutClick = onLogoutClick,
                 modifier = Modifier.padding(AppDimensions.Spacing.dp)
             )

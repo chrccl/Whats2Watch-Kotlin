@@ -25,4 +25,16 @@
     <string name="join_a_room">Entra in una stanza</string>
     <string name="room_code">Codice</string>
     <string name="join">Entra</string>
+    <string name="no_movies_found">Nessun film trovato</string>
+    <string name="poster">%1$s poster</string>
+    <string name="close">Chiudi</string>
+    <string name="star">Star %1$s</string>
+    <string name="search_movies">Cerca film...</string>
+    <string name="search">Cerca</string>
+    <string name="search_for_movies_to_review">Cerca film da recensire</string>
+    <string name="rating">Voto</string>
+    <string name="comment">Commento</string>
+    <string name="review_movie">Recensione Film</string>
+    <string name="your_comment">Il tuo commento</string>
+    <string name="reviews_for">Recensione per %1$s</string>
 </resources>

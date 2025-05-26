@@ -25,4 +25,16 @@
     <string name="join_a_room">Join a Room</string>
     <string name="room_code">Room Code</string>
     <string name="join">Join</string>
+    <string name="search_movies">Search movies...</string>
+    <string name="search">Search</string>
+    <string name="search_for_movies_to_review">Search for movies to review</string>
+    <string name="no_movies_found">No movies found</string>
+    <string name="poster">%1$s poster</string>
+    <string name="rating">Rating</string>
+    <string name="comment">Comment</string>
+    <string name="review_movie">Review Movie</string>
+    <string name="close">Close</string>
+    <string name="star">Star %1$s</string>
+    <string name="your_comment">Your comment</string>
+    <string name="reviews_for">Reviews for %1$s</string>
 </resources>
