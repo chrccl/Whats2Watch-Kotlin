@@ -80,6 +80,9 @@ fun HomepageScreen(
                 onRoomClick = { room ->
                     onRoomsClick(room.code, user.username)
                 },
+                onRoomDelete = { room ->
+                    roomViewModel.deleteOrLeaveRoom(room.code, user.username)
+                },
                 modifier = Modifier.weight(1f)
             )
         }

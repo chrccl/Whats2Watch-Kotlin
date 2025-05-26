@@ -1,6 +1,7 @@
 package it.namenotfoundexception.whats2watch.ui.theme.screens.common
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,11 +16,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -44,6 +49,7 @@ import it.namenotfoundexception.whats2watch.viewmodels.RoomViewModel
 fun RecentRoomsSection(
     rooms: List<Room>,
     onRoomClick: (Room) -> Unit,
+    onRoomDelete: (Room) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -59,7 +65,8 @@ fun RecentRoomsSection(
         if (rooms.isNotEmpty()) {
             RoomsList(
                 rooms = rooms,
-                onRoomClick = onRoomClick
+                onRoomClick = onRoomClick,
+                onRoomDelete = onRoomDelete
             )
         } else {
             EmptyRoomsMessage()
@@ -84,7 +91,8 @@ private fun SectionTitle(
 @Composable
 private fun RoomsList(
     rooms: List<Room>,
-    onRoomClick: (Room) -> Unit
+    onRoomClick: (Room) -> Unit,
+    onRoomDelete: (Room) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -93,16 +101,19 @@ private fun RoomsList(
         items(rooms) { room ->
             RoomCard(
                 room = room,
-                onClick = { onRoomClick(room) }
+                onClick = { onRoomClick(room) },
+                onDeleteClick = { onRoomDelete(room) }
             )
         }
     }
 }
 
+
 @Composable
 fun RoomCard(
     room: Room,
     onClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     roomViewModel: RoomViewModel = hiltViewModel<RoomViewModel>()
 ) {
     val roomWithUser by roomViewModel.roomData.collectAsState()
@@ -124,7 +135,8 @@ fun RoomCard(
     ) {
         RoomCardContent(
             room = room,
-            memberCount = roomWithUser?.participants?.size ?: 0
+            memberCount = roomWithUser?.participants?.size ?: 0,
+            onDeleteClick = onDeleteClick
         )
     }
 }
@@ -132,33 +144,54 @@ fun RoomCard(
 @Composable
 private fun RoomCardContent(
     room: Room,
-    memberCount: Int
+    memberCount: Int,
+    onDeleteClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.width(AppDimensions.Spacing.dp))
-
-        Column(
-            modifier = Modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceBetween
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = room.code,
-                fontSize = AppTextSizes.Caption.sp,
-                fontWeight = FontWeight.Medium,
-                color = AppColors.OnSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            Spacer(modifier = Modifier.width(AppDimensions.Spacing.dp))
 
-            Text(
-                text = stringResource(R.string.members, memberCount),
-                fontSize = AppTextSizes.Small.sp,
-                color = AppColors.Secondary
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = room.code,
+                    fontSize = AppTextSizes.Caption.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = AppColors.OnSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Text(
+                    text = stringResource(R.string.members, memberCount),
+                    fontSize = AppTextSizes.Small.sp,
+                    color = AppColors.Secondary
+                )
+            }
+        }
+
+        // Pulsante elimina in basso a destra
+        IconButton (
+            onClick = onDeleteClick,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(8.dp)
+                .size(32.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = stringResource(R.string.leave_room),
+                tint = Color.Red,
+                modifier = Modifier.size(20.dp)
             )
         }
     }

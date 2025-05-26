@@ -68,4 +68,5 @@
     <string name="error_leaving_the_room">Error leaving the room: %1$s</string>
     <string name="error_during_loading_room">Error during loading room: %1$s</string>
     <string name="cannot_fetch_user_s_room">Cannot fetch user\'s room: %1$s</string>
+    <string name="leave_room">Leave Room</string>
 </resources>

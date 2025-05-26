@@ -58,18 +58,6 @@ class RoomViewModel @Inject constructor(
         }
     }
 
-    fun leaveRoom(code: String, username: String) {
-        viewModelScope.launch {
-            try {
-                roomRepo.removeParticipant(code, username)
-                _roomError.value = null
-                loadRoom(code)
-            } catch (e: Exception) {
-                _roomError.value = res.getString(R.string.error_leaving_the_room, e.message)
-            }
-        }
-    }
-
     fun loadRoom(code: String) {
         viewModelScope.launch {
             try {
@@ -88,6 +76,24 @@ class RoomViewModel @Inject constructor(
                 _roomError.value = null
             } catch (e: Exception) {
                 _roomError.value = res.getString(R.string.cannot_fetch_user_s_room, e.message)
+            }
+        }
+    }
+
+    fun deleteOrLeaveRoom(code: String, username: String) {
+        viewModelScope.launch {
+            try {
+                val room = roomRepo.getRoomByCode(code)
+                if (room.usernameHost == username) {
+                    roomRepo.removeAllParticipants(code)
+                    roomRepo.deleteRoom(code)
+                } else {
+                    roomRepo.removeParticipant(code, username)
+                }
+                getRoomsByUser(username)
+                _roomError.value = null
+            } catch (e: Exception) {
+                _roomError.value = res.getString(R.string.error_leaving_the_room, e.message)
             }
         }
     }
