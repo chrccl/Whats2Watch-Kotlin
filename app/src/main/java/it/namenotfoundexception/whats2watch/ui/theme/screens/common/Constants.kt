@@ -10,21 +10,17 @@ object AppColors {
     val OnBackground = Color.White
     val OnSurface = Color.White
     val Secondary = Color.Gray
-    val Error = Color.Red
     val Transparent = Color.Transparent
-    val FormBackground = Color(0x99000000)
 }
 
 object AppDimensions {
     val BottomNavHeight = 80
     val CardElevation = 4
     val ButtonHeight = 56
-    val SmallButtonHeight = 48
     val IconSize = 50
     val LoadingIndicatorSize = 24
     val BorderRadius = 8
     val CardRadius = 16
-    val FormRadius = 16
     val Spacing = 16
     val SmallSpacing = 8
     val LargeSpacing = 24

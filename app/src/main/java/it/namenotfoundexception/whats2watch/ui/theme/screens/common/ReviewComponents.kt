@@ -199,87 +199,101 @@ fun MovieSearchItem(
             // Movie Info
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = movie.title,
-                    color = AppColors.OnSurface,
-                    fontSize = AppTextSizes.Body.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Text(
-                    text = movie.year,
-                    color = AppColors.Secondary,
-                    fontSize = AppTextSizes.Small.sp
-                )
-
-                movie.genre?.let { genre ->
+                // Movie details section
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     Text(
-                        text = genre,
-                        color = AppColors.Secondary,
-                        fontSize = 12.sp,
-                        maxLines = 1,
+                        text = movie.title,
+                        color = AppColors.OnSurface,
+                        fontSize = AppTextSizes.Body.sp,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-                }
 
-                movie.imdbRating?.let { rating ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = stringResource(R.string.rating),
-                            tint = Color(0xFFFFD700),
-                            modifier = Modifier.size(16.dp)
-                        )
+                    Text(
+                        text = movie.year,
+                        color = AppColors.Secondary,
+                        fontSize = AppTextSizes.Small.sp
+                    )
+
+                    movie.genre?.let { genre ->
                         Text(
-                            text = rating,
-                            color = AppColors.OnSurface,
-                            fontSize = AppTextSizes.Small.sp
+                            text = genre,
+                            color = AppColors.Secondary,
+                            fontSize = 12.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
+                    }
+
+                    movie.imdbRating?.let { rating ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = stringResource(R.string.rating),
+                                tint = Color(0xFFFFD700),
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Text(
+                                text = rating,
+                                color = AppColors.OnSurface,
+                                fontSize = AppTextSizes.Small.sp
+                            )
+                        }
                     }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
-
+                // Buttons section - fixed layout
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(AppDimensions.SmallSpacing.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    // Comment Button (Red)
                     Button(
                         onClick = onCommentClick,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = AppColors.Primary
                         ),
-                        shape = RoundedCornerShape(AppDimensions.SmallSpacing.dp),
+                        shape = RoundedCornerShape(6.dp),
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                         modifier = Modifier
                             .weight(1f)
-                            .height(32.dp)
+                            .height(40.dp) // Increased height for better touch target
                     ) {
                         Text(
                             text = stringResource(R.string.comment),
-                            fontSize = 12.sp
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = AppColors.OnPrimary
                         )
                     }
 
+                    // Reviews Button (Green)
                     Button(
                         onClick = onViewReviewsClick,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF4CAF50)
                         ),
-                        shape = RoundedCornerShape(AppDimensions.SmallSpacing.dp),
+                        shape = RoundedCornerShape(6.dp),
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                         modifier = Modifier
                             .weight(1f)
-                            .height(32.dp)
+                            .height(40.dp) // Increased height for better touch target
                     ) {
                         Text(
                             text = stringResource(R.string.reviews),
-                            fontSize = 12.sp
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White
                         )
                     }
                 }
